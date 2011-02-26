@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task List</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/tasks.css">
+    <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('section.tabs section > h3').click(function() {
+                $('section.tabs section').removeClass('current');
+                $(this).closest('section').addClass('current');
+            });
+
+            var tasks = {};
+
+            var saving_stated = false;
+            var save_task = function(task_name, task_value) {
+                if (!saving_stated) {
+                    saving_stated = true;
+                    var data = {};
+                    data[task_name] = task_value;
+                    setTimeout(function() {
+                        $.post("{{url_for('save_tasks')}}", data, function(data) {
+                            tasks[task_name] = task_value;
+                            $('#saved').removeClass('unsaved').addClass('saved');
+                        });
+                    }, 2000);
+                    saving_stated = false;
+                }
+            };
+
+            $.each($('textarea'), function() {
+                tasks[$(this).attr('id')] = $(this).val();
+            });
+
+
+            $('textarea').keyup(function(event) {
+                if ($(this).val() != tasks[$(this).attr('id')]) {
+                    $('#saved').removeClass('saved').addClass('unsaved');
+                    save_task($(this).attr('id'), $(this).val());
+                }
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+
+<section class="tabs">
+    <section class="current">
+        <h3>Inbox</h3>
+
+        <div>
+            <textarea id="inbox" class="tasks active"></textarea>
+        </div>
+    </section>
+    <section>
+        <h3>Follow Up</h3>
+
+        <div>
+            <textarea id="follow_up" class="tasks inactive"></textarea>
+        </div>
+    </section>
+    <section>
+        <h3>Hold</h3>
+
+        <div>
+            <textarea id="hold" class="tasks inactive"></textarea>
+        </div>
+    </section>
+</section>
+<section>
+    <span id="saved" class="unsaved">Saved</span>
+</section>
+
+</body>
+</html>
