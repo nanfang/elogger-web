@@ -1,0 +1,52 @@
+# Maven build dir
+target/
+
+# celery monitor
+djcelerymon.db
+celerybeat-schedule
+
+# IntelliJ IDEA project files
+*.ipr
+*.iml
+*.iws
+*.log
+*.idea
+.idea/
+
+# Python
+*.pyc
+*.egg-info/
+
+# eclipse project files
+.classpath
+.project
+.cproject
+.settings
+
+# virtual python env
+python-env*/
+
+# gradle 
+.gradle/
+build/
+
+# vim
+tags
+cscope.*
+*.swp
+
+# package
+*.tgz
+
+# csv import backup files
+*_backup.csv
+*_errors.csv
+
+#test coverage
+.coverage
+nosetests.xml
+cover
+*.py,cover
+
+# suds cache
+suds/
