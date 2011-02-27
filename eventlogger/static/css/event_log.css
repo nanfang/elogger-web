@@ -1,0 +1,53 @@
+body {
+    font-family: Arial;
+    font-size: 12px;
+}
+
+
+ul {
+    list-style: none;
+
+}
+
+li {
+    padding: 5px 0 5px 10px;
+    border-bottom: 1px dotted #fff;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.current {
+    background: #9acd32;
+    padding: 5px 0 5px 10px;
+    border-bottom: 1px dotted #fff;
+}
+
+.current textarea{
+    background:#fff;
+}
+
+.weekend {
+    background: #ffd700;
+    padding: 5px 0 5px 10px;
+    border-bottom: 1px dotted #fff;
+}
+
+.monthEnd {
+    background: #ffc0cb;
+    padding: 5px 0 5px 10px;
+    border-bottom: 1px dotted #fff;
+}
+
+.yearEnd {
+    background:#8a2be2;
+    padding: 5px 0 5px 10px;
+    border-bottom: 1px dotted #fff;
+}
+
+textarea {
+    border: 0;
+    width:90%;
+    height:60px;
+    color:gray;
+    background:transparent;
+}
