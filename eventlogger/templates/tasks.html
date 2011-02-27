@@ -13,7 +13,7 @@
             });
 
             var tasks = {};
-
+            // TODO: try autosave plugin or write one
             var saving_stated = false;
             var save_task = function(task_name, task_value) {
                 if (!saving_stated) {
@@ -53,21 +53,21 @@
         <h3>Inbox</h3>
 
         <div>
-            <textarea id="inbox" class="tasks active"></textarea>
+            <textarea id="inbox" class="tasks active">{{inbox}}</textarea>
         </div>
     </section>
     <section>
         <h3>Follow Up</h3>
 
         <div>
-            <textarea id="follow_up" class="tasks inactive"></textarea>
+            <textarea id="follow_up" class="tasks inactive">{{follow_up}}</textarea>
         </div>
     </section>
     <section>
         <h3>Hold</h3>
 
         <div>
-            <textarea id="hold" class="tasks inactive"></textarea>
+            <textarea id="hold" class="tasks inactive">{{hold}}</textarea>
         </div>
     </section>
 </section>
