@@ -1,38 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<application>
-  <component name="FeatureUsageStatistics" first-run="1298690431411" have-been-shown="true" show-in-other="true" show-in-compilation="true">
-    <feature id="codeassists.surroundwith.statement" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.goto.inspection" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.popup.camelprefix" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="codeassists.quickjavadoc.lookup" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="codeassists.comment.line" count="26" last-shown="0" last-used="1298820090651" average-frequency="1535803" shown-count="0" />
-    <feature id="navigation.popup.file" count="5" last-shown="0" last-used="1298905222960" average-frequency="1558777" shown-count="0" />
-    <feature id="codeassists.quickdefinition.lookup" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.goto.usages" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.popup.symbol" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.popup.action" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="codeassists.quickjavadoc.ctrln" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="find.completion" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="editing.completion.replace" count="26" last-shown="0" last-used="1298821701313" average-frequency="1344717" shown-count="0" />
-    <feature id="tag.name.completion" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="ui.recentchanges" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="editing.select.word" count="39" last-shown="0" last-used="1298907121846" average-frequency="1133464" shown-count="0" />
-    <feature id="refactoring.introduceVariable" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.popup.class" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="ui.tree.speedsearch" count="3" last-shown="0" last-used="1298814475091" average-frequency="3731456" shown-count="0" />
-    <feature id="navigation.popup.wildcards" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.goto.declaration" count="24" last-shown="0" last-used="1298906073183" average-frequency="1801626" shown-count="0" />
-    <feature id="editing.completion.basic" count="125" last-shown="0" last-used="1298908960428" average-frequency="415880" shown-count="0" />
-    <feature id="codeassists.quickdefinition" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="ui.scheme.quickswitch" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="find.recent.search" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.recent.files" count="18" last-shown="0" last-used="1298909764251" average-frequency="1708331" shown-count="0" />
-    <feature id="navigation.popup.file.structure" count="1" last-shown="0" last-used="1298814473321" average-frequency="0" shown-count="0" />
-    <feature id="editing.completion.camelHumps" count="6" last-shown="0" last-used="1298906990048" average-frequency="309610" shown-count="0" />
-    <feature id="refactoring.rename" count="6" last-shown="0" last-used="1298822417272" average-frequency="2774443" shown-count="0" />
-    <feature id="codeassists.quickjavadoc" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-    <feature id="navigation.select.in" count="3" last-shown="0" last-used="1298822395743" average-frequency="2984850" shown-count="0" />
-    <feature id="editing.completion.finishByDotEtc" count="0" last-shown="0" last-used="0" average-frequency="0" shown-count="0" />
-  </component>
-</application>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/css/event-log.css">
+    <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.glob.js"></script>
+    <script type="text/javascript" src="../static/js/date.js"></script>
+    <script>
+        $(function() {
+            function showLogs(date) {
+                var currentYear = date.year();
+                while (date.year() == currentYear) {
 
+                    $("#logs").append("<li>" +date.date().getDay()+' - '+ date.format("yyyy-MM-dd") + "</li>");
+                    date = date.adjust("D", -1);
+                }
+            }
+            showLogs($.date());
+        });
+    </script>
+</head>
+<body>
+<h1>2011</h1>
+
+<div class="content">
+    <ul id="logs">
+
+    </ul>
+</div>
+</body>
+</html> 

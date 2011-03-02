@@ -13,6 +13,10 @@ def index():
 def tasks():
     return render_template('tasks.html', **redis.hgetall('tasks'))
 
+@app.route('/event-log')
+def event_log():
+    return render_template('event-log.html')
+
 @app.route('/tasks', methods=['POST'])
 def save_tasks():
     redis.hmset('tasks', request.form)
