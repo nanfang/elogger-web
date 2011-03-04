@@ -5,27 +5,62 @@
     <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
     <script type="text/javascript" src="../static/js/jquery.glob.js"></script>
     <script type="text/javascript" src="../static/js/date.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.editinplace.js"></script>
+
     <script>
         $(function() {
             function showLogs(date) {
                 var currentYear = date.year();
-                while (date.year() == currentYear) {
 
-                    $("#logs").append("<li>" +date.date().getDay()+' - '+ date.format("yyyy-MM-dd") + "</li>");
-                    date = date.adjust("D", -1);
-                }
+                $.getJSON("event-log/" + currentYear, function(data) {
+                    while (date.year() == currentYear) {
+                        var date_str = date.format("yyyy-MM-dd");
+                        $("#log_detail").tmpl({
+                            clazz: 'workingDay',
+                            date: date_str,
+                            log: data[date_str]
+                        }).appendTo("#logs");
+                        date = date.adjust("D", -1);
+                    }
+
+                    $(".log_content").editInPlace({
+//                        callback: function(unused, enteredText) {
+//                            return '<pre>' + enteredText + '</pre>';
+//                        },
+                        save_if_nothing_changed:true,
+//                        show_buttons:true,
+                        cancel_button:'',
+                        url: "event-log/" + currentYear,
+//                        params:	"date:"+date_str,
+                        default_text: "",
+                        bg_over: "#cff",
+                        field_type: "textarea",
+                        textarea_rows: "15",
+                        textarea_cols: "50"
+//                        saving_image: "./images/ajax-loader.gif"
+                    });
+                });
             }
+
             showLogs($.date());
         });
     </script>
 </head>
 <body>
-<h1>2011</h1>
 
-<div class="content">
-    <ul id="logs">
+<table id="annual_log">
+    <caption>2011</caption>
+    <tbody id="logs">
 
-    </ul>
-</div>
+    </tbody>
+</table>
+
+<script id="log_detail" type="text/x-jquery-tmpl">
+    <tr class="${clazz}">
+        <td class="log_date">${date}</td>
+        <td class="log_content" id='${date}'><pre>${log}</pre></td>
+    </tr>
+</script>
 </body>
 </html> 
