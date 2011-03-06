@@ -13,7 +13,7 @@ PYTHON_ENV_DIR = DEPLOY_DIR / 'python-env'
 env.hosts = ['ec2-174-129-160-32.compute-1.amazonaws.com']
 
 def stop_all():
-    with cd('%s/deployed' % DEPLOY_DIR):
+    with cd(PACKAGE_DIR):
         run('. %s/bin/activate && supervisorctl stop all' % PYTHON_ENV_DIR)
 
 def copy_files():
@@ -26,9 +26,9 @@ def install():
         run('. %s/bin/activate && pip install -r dependencies.txt && paver develop' % PYTHON_ENV_DIR)
 
 def start_all():
-    with cd(DEPLOY_DIR):
-        run('. %s/bin/activate && supervisorctl -u msx -p f1reh0rse reload' % PYTHON_ENV_DIR)
+    with cd(PACKAGE_DIR):
+        run('. %s/bin/activate && supervisorctl reload' % PYTHON_ENV_DIR)
 
 def status():
-    with cd(DEPLOY_DIR):
-        run('. %s/bin/activate && supervisorctl -u msx -p f1reh0rse status' % PYTHON_ENV_DIR)
+    with cd(PACKAGE_DIR):
+        run('. %s/bin/activate && supervisorctl status' % PYTHON_ENV_DIR)
