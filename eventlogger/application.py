@@ -1,3 +1,5 @@
+from __future__ import unicode_literals, print_function, division
+
 from flask import Flask, request, render_template
 from flask.helpers import jsonify
 
