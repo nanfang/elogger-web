@@ -16,8 +16,10 @@
                 $.getJSON("event-log/" + currentYear, function(data) {
                     while (date.year() == currentYear) {
                         var date_str = date.format("yyyy-MM-dd");
+                        var day = date.date().getDay();
+
                         $("#log_detail").tmpl({
-                            clazz: 'workingDay',
+                            clazz: day == 0 ? 'weekend' : 'workingDay',
                             date: date_str,
                             log: data[date_str]
                         }).appendTo("#logs");
@@ -25,20 +27,14 @@
                     }
 
                     $(".log_content").editInPlace({
-//                        callback: function(unused, enteredText) {
-//                            return '<pre>' + enteredText + '</pre>';
-//                        },
                         save_if_nothing_changed:true,
-//                        show_buttons:true,
                         cancel_button:'',
                         url: "event-log/" + currentYear,
-//                        params:	"date:"+date_str,
                         default_text: "",
                         bg_over: "#cff",
                         field_type: "textarea",
                         textarea_rows: "15",
                         textarea_cols: "50"
-//                        saving_image: "./images/ajax-loader.gif"
                     });
                 });
             }
@@ -59,7 +55,9 @@
 <script id="log_detail" type="text/x-jquery-tmpl">
     <tr class="${clazz}">
         <td class="log_date">${date}</td>
-        <td class="log_content" id='${date}'><pre>${log}</pre></td>
+        <td class="log_content" id='${date}'>
+            <pre>${log}</pre>
+        </td>
     </tr>
 </script>
 </body>
