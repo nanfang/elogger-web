@@ -3,7 +3,7 @@ from paver.easy import *
 
 setup(
         name="Event Logger",
-        packages=['eventlogger'],
+        packages=['elogger'],
         version="0.1",
         )
 

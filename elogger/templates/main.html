@@ -157,10 +157,10 @@
     <div class="content">                         
         <div class="panel">                       
             <ul> 
-			<iframe src="{{ url_for('tasks') }}" style="width:100%; height:550px; border:0"></iframe>
+			<iframe src="{{ url_for('tasks', user=user) }}" style="width:100%; height:550px; border:0"></iframe>
             </ul> 
             <ul> 
-			<iframe src="{{ url_for('event_log') }}" style="width:100%; height:550px; border:0"></iframe>
+			<iframe src="{{ url_for('event_log', user=user) }}" style="width:100%; height:550px; border:0"></iframe>
             </ul>
         </div>   
     </div>    

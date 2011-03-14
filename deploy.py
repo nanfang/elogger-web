@@ -6,7 +6,7 @@ import os
 from fabric.api import *
 from path import path
 
-DEPLOY_DIR = path('/opt/event-logger')
+DEPLOY_DIR = path('/opt/elogger')
 PACKAGE_DIR = DEPLOY_DIR / 'deployed'
 PYTHON_ENV_DIR = DEPLOY_DIR / 'python-env'
 
