@@ -1,79 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Task List</title>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/tasks.css">
-    <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('section.tabs section > h3').click(function() {
-                $('section.tabs section').removeClass('current');
-                $(this).closest('section').addClass('current');
-            });
-
-            var tasks = {};
-            // TODO: try autosave plugin or write one
-            var saving_stated = false;
-            var save_task = function(task_name, task_value) {
-                if (!saving_stated) {
-                    saving_stated = true;
-                    var data = {};
-                    data[task_name] = task_value;
-                    setTimeout(function() {
-                        $.post("{{url_for('save_tasks', user=user)}}", data, function(data) {
-                            tasks[task_name] = task_value;
-                            $('#saved').removeClass('unsaved').addClass('saved');
-                        });
-                    }, 2000);
-                    saving_stated = false;
-                }
-            };
-
-            $.each($('textarea'), function() {
-                tasks[$(this).attr('id')] = $(this).val();
-            });
-
-
-            $('textarea').keyup(function(event) {
-                if ($(this).val() != tasks[$(this).attr('id')]) {
-                    $('#saved').removeClass('saved').addClass('unsaved');
-                    save_task($(this).attr('id'), $(this).val());
-                }
-            });
-
-
+{% extends "layout.html" %}
+{% block head%}
+<link rel="stylesheet" type="text/css" href="../static/css/tasks.css">
+<script type="text/javascript" src="../static/js/jquery.idTabs.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        // Fast and dirty
+        $('article.tabs section > h3').click(function() {
+            $('article.tabs section').removeClass('current');
+            $(this).closest('section').addClass('current');
         });
-    </script>
-</head>
-<body>
+        var tasks = {};
+        // TODO: try autosave plugin or write one
+        var saving_stated = false;
+        var save_task = function(task_name, task_value) {
+            if (!saving_stated) {
+                saving_stated = true;
+                var data = {};
+                data[task_name] = task_value;
+                setTimeout(function() {
+                    $.post("{{url_for('save', user=user)}}", data, function(data) {
+                        tasks[task_name] = task_value;
+                        $('#saved').removeClass('unsaved').addClass('saved');
+                    });
+                }, 2000);
+                saving_stated = false;
+            }
+        };
 
-<section class="tabs">
-    <section class="current">
-        <h3>Inbox</h3>
+        $.each($('textarea'), function() {
+            tasks[$(this).data('key')] = $(this).val();
+        });
 
-        <div>
-            <textarea id="inbox" class="tasks active">{{inbox}}</textarea>
+
+        $('textarea').keyup(function(event) {
+            if ($(this).val() != tasks[$(this).data('key')]) {
+                $('#saved').removeClass('saved').addClass('unsaved');
+                save_task($(this).data('key'), $(this).val());
+            }
+        });
+
+        $("#usual2 ul").idTabs("tabs2");
+
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+    <h4>Task List</h4>
+
+    <div class="line"></div>
+    <div class="articleBody clear">
+        <div id="usual2" class="usual">
+            <ul>
+                <li><a href="#inbox" class="selected">Inbox</a></li>
+                <li><a href="#follow_up">Follow Up</a></li>
+                <li><a href="#hold">Hold</a></li>
+                <li><a href="#archive">Archive</a></li>
+            </ul>
+            <div id="inbox"><textarea data-key="inbox"  class="tasks active">{{inbox}}</textarea></div>
+            <div id="follow_up"><textarea data-key="follow_up" class="tasks inactive">{{follow_up}}</textarea></div>
+            <div id="hold" ><textarea data-key="hold" class="tasks inactive">{{hold}}</textarea></div>
+            <div id="archive" ><textarea data-key="archive" class="tasks inactive">{{archive}}</textarea></div>
         </div>
-    </section>
-    <section>
-        <h3>Follow Up</h3>
-
-        <div>
-            <textarea id="follow_up" class="tasks inactive">{{follow_up}}</textarea>
-        </div>
-    </section>
-    <section>
-        <h3>Hold</h3>
-
-        <div>
-            <textarea id="hold" class="tasks inactive">{{hold}}</textarea>
-        </div>
-    </section>
-</section>
-<section>
+    </div>
     <span id="saved" class="unsaved">Saved</span>
-</section>
+</article>
 
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Welcome to eLogger! Enjoy it!</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css"/>
+    <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+<section id="page"> <!-- Defining the #page section with the section tag -->
+
+    <header> <!-- Defining the header section of the page with the appropriate tag -->
+        <hgroup>
+            <h1>eLogger</h1>
+
+            <h2>Log yourself everywhere</h2>
+        </hgroup>
+        <nav class="clear"> <!-- The nav link semantically marks your main site navigation -->
+            <ul>
+                <li><a href="#" class="selected">Task List</a></li>
+                <li><a href="event_log.html">Event Log</a></li>
+                <li><a href="#">Weekly Board</a></li>
+            </ul>
+        </nav>
+        <div class="clear">
+            <div class="profile">Dear Luna, welcome to eLogger! <a href="">Logout</a></div>
+        </div>
+
+    </header>
+
+    <section> <!-- A new section with the articles -->
+        {% block content %}{% endblock %}
+    </section>
+
+    <footer> <!-- Marking the footer section -->
+        <p>Copyright 2011</p> <!-- Change the copyright notice -->
+        <a href="#" class="up">Go UP</a>
+    </footer>
+</section>
+<!-- Closing the #page section -->
+</body>
+</html>

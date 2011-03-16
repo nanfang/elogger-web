@@ -2,7 +2,7 @@ from paver.setuputils import setup
 from paver.easy import *
 
 setup(
-        name="Event Logger",
+        name="eLogger",
         packages=['elogger'],
         version="0.1",
         )
