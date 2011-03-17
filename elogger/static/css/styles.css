@@ -351,6 +351,7 @@ nav ul li  .selected{
 table{
 width: 100%;
 text-align: left;
+    color:#000000;
 }
 th{
 padding: 5px;
@@ -428,4 +429,13 @@ footer a.by{
 
 footer a.up{
 	float:right;
+}
+
+.log_detail pre{
+    word-wrap:break-word;
+}
+
+textarea.tasks {
+    width: 95%;
+    height: 500px;
 }

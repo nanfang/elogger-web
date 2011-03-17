@@ -1,64 +1,81 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="../static/css/event-log.css">
-    <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
-    <script type="text/javascript" src="../static/js/jquery.glob.js"></script>
-    <script type="text/javascript" src="../static/js/date.js"></script>
-    <script type="text/javascript" src="../static/js/jquery.tmpl.js"></script>
-    <script type="text/javascript" src="../static/js/jquery.editinplace.js"></script>
+{% extends "layout.html" %}
 
-    <script>
-        $(function() {
-            function showLogs(date) {
-                var currentYear = date.year();
+{% block head%}
+<script type="text/javascript" src="../static/js/jquery.glob.js"></script>
+<script type="text/javascript" src="../static/js/date.js"></script>
+<script type="text/javascript" src="../static/js/jquery.tmpl.js"></script>
+<script type="text/javascript" src="../static/js/jquery.editinplace.js"></script>
 
-                $.getJSON("event-log/" + currentYear, function(data) {
-                    while (date.year() == currentYear) {
-                        var date_str = date.format("yyyy-MM-dd");
-                        var day = date.date().getDay();
+<script>
+    $(function() {
+        function showLogs(date) {
+            var currentYear = date.year();
 
-                        $("#log_detail").tmpl({
-                            clazz: day == 0 ? 'weekend' : 'workingDay',
-                            date: date_str,
-                            log: data[date_str]
-                        }).appendTo("#logs");
-                        date = date.adjust("D", -1);
-                    }
+            $.getJSON("event-log/" + currentYear, function(data) {
+                while (date.year() == currentYear) {
+                    var date_str = date.format("yyyy-MM-dd");
+                    var day = date.date().getDay();
 
-                    $(".log_content").editInPlace({
-                        save_if_nothing_changed:true,
-                        cancel_button:'',
-                        url: "event-log/" + currentYear,
-                        default_text: "",
-                        bg_over: "#cff",
-                        field_type: "textarea",
-                        textarea_rows: "15",
-                        textarea_cols: "50"
-                    });
+                    $("#log_detail").tmpl({
+                        clazz: day == 0 ? 'weekend' : 'workingDay',
+                        date: date_str,
+                        log: data[date_str]
+                    }).appendTo("#logs");
+                    date = date.adjust("D", -1);
+                }
+
+                $(".log_content").editInPlace({
+                    save_if_nothing_changed:true,
+                    cancel_button:'',
+                    url: "event-log/" + currentYear,
+                    default_text: "",
+                    bg_over: "#cff",
+                    field_type: "textarea",
+                    textarea_rows: "15",
+                    textarea_cols: "50"
                 });
-            }
+            });
+        }
 
-            showLogs($.date());
-        });
-    </script>
-</head>
-<body>
+        showLogs($.date());
+    });
+</script>
+{% endblock %}
+{% block content %}
+<article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
 
-<table id="annual_log">
-    <caption>2011</caption>
-    <tbody id="logs">
+    <h4>Event Log</h4>
 
-    </tbody>
-</table>
+    <div class="line"></div>
+    <div class="articleBody clear">
 
+        <!-- Table CODE-->
+        <table>
+            <colgroup>
+                <col width="15%"/>
+                <col width="40%"/>
+                <col/>
+            </colgroup>
+
+            <thead>
+            <th></th>
+            <th>2011</th>
+            <th>Remark</th>
+            </thead>
+            <tbody id="logs">
+
+            </tbody>
+        </table>
+        <!-- /Table CODE -->
+    </div>
+</article>
 <script id="log_detail" type="text/x-jquery-tmpl">
     <tr class="${clazz}">
         <td class="log_date">${date}</td>
         <td class="log_content" id='${date}'>
             <pre>${log}</pre>
         </td>
+        <td></td>
     </tr>
 </script>
-</body>
-</html> 
+{% endblock %}

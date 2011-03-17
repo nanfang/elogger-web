@@ -18,7 +18,7 @@
                 var data = {};
                 data[task_name] = task_value;
                 setTimeout(function() {
-                    $.post("{{url_for('save', user=user)}}", data, function(data) {
+                    $.post("{{url_for('save')}}", data, function(data) {
                         tasks[task_name] = task_value;
                         $('#saved').removeClass('unsaved').addClass('saved');
                     });

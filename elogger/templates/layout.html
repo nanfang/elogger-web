@@ -19,8 +19,8 @@
         </hgroup>
         <nav class="clear"> <!-- The nav link semantically marks your main site navigation -->
             <ul>
-                <li><a href="#" class="selected">Task List</a></li>
-                <li><a href="event_log.html">Event Log</a></li>
+                <li><a href="/tasks" class="{% if '/tasks' == request.path %} selected {% endif %}"  >Task List</a></li>
+                <li><a href="/event-log" class="{% if '/event-log' == request.path %} selected {% endif %}"  >Event Log</a></li>
                 <li><a href="#">Weekly Board</a></li>
             </ul>
         </nav>
