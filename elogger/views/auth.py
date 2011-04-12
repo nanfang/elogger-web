@@ -12,7 +12,7 @@ auth = Module(__name__)
 
 @auth.route('/')
 def index():
-    return redirect(url_for('elogger.tasks.index'))
+    return redirect(url_for('todos.index'))
 
 @auth.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
@@ -22,16 +22,16 @@ def sign_in():
 
         if login_name and password == redis.get('%s:password' % login_name):
             session['username'] = request.form['username']
-            return redirect(url_for('tasks.index'))
+            return redirect(url_for('todos.index'))
 
     return render_template('sign-in.html')
 
 
 @auth.route('/sign-out')
-def logout():
+def sign_out():
     # remove the username from the session if its there
     session.pop('username', None)
-    return redirect(url_for('sign-in'))
+    return redirect(url_for('sign_in'))
 
 def requires_auth(f):
     @wraps(f)

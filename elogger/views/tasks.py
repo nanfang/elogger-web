@@ -12,17 +12,17 @@ tasks = Module(__name__)
 def favicon():
     return tasks.send_static_file("favicon.png")
 #
-#@tasks.route('/<user>')
+#@todos.route('/<user>')
 #def main(user):
 #    return render_template('main.html', user=user)
 
-@tasks.route('/tasks')
+@tasks.route('/todos')
 @requires_auth
 def index():
-    return render_template('tasks.html', user=session['username'], **redis.hgetall('%s:tasks' % session['username']))
+    return render_template('todos.html', user=session['username'], **redis.hgetall('%s:todos' % session['username']))
 
-@tasks.route('/tasks', methods=['POST'])
+@tasks.route('/todos', methods=['POST'])
 @requires_auth
 def save():
-    redis.hmset('%s:tasks' % session['username'], request.form)
+    redis.hmset('%s:todos' % session['username'], request.form)
     return ''

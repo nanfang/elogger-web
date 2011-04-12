@@ -10,7 +10,7 @@ DEPLOY_DIR = path('/opt/elogger')
 PACKAGE_DIR = DEPLOY_DIR / 'deployed'
 PYTHON_ENV_DIR = DEPLOY_DIR / 'python-env'
 
-env.hosts = ['ec2-174-129-160-32.compute-1.amazonaws.com']
+env.hosts = ['elogger.me']
 
 def stop_all():
     with cd(PACKAGE_DIR):
@@ -18,7 +18,7 @@ def stop_all():
 
 def copy_files():
     rsync_project(PACKAGE_DIR, '.',
-                  exclude=('.git**', '.idea**', 'python-env**', 'log**', '*.egg-info', '*.pyc', 'fab.py'),
+                  exclude=('.git**', '.idea**', 'build', 'api',  '*.egg-info*', 'python-env**', 'log**', '*.egg-info', '*.pyc', 'fab.py'),
                   delete=True, extra_opts='--force --chmod=g+w -O')
 
 def install():

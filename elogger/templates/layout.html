@@ -19,13 +19,13 @@
         </hgroup>
         <nav class="clear"> <!-- The nav link semantically marks your main site navigation -->
             <ul>
-                <li><a href="/tasks" class="{% if '/tasks' == request.path %} selected {% endif %}"  >Task List</a></li>
+                <li><a href="/todos" class="{% if '/tasks' == request.path %} selected {% endif %}"  >Task List</a></li>
                 <li><a href="/event-log" class="{% if '/event-log' == request.path %} selected {% endif %}"  >Event Log</a></li>
                 <li><a href="#">Weekly Board</a></li>
             </ul>
         </nav>
         <div class="clear">
-            <div class="profile">Dear Luna, welcome to eLogger! <a href="">Logout</a></div>
+            <div class="profile">Dear {{session['username']}}, welcome to eLogger! <a href="/sign-out">Logout</a></div>
         </div>
 
     </header>
