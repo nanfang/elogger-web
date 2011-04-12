@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block head%}
+<script type="text/javascript" src="../static/js/jquery-ui-1.8.11.custom.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $("#accordion").accordion({
+            collapsible: true
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+    <h4>Weekly Think</h4>
+
+    <div id="accordion">
+        <h5><a href="#">2011-04-13</a></h5>
+
+        <div>
+            Goal<br/>
+            <textarea rows="20" cols="100"></textarea>
+        </div>
+        <h5><a href="#">2011-04-05</a></h5>
+
+        <div>
+            <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at
+                aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non
+                quam.
+                In suscipit faucibus urna. </p>
+        </div>
+        <h5><a href="#">2011-03-05</a></h5>
+
+        <div>
+            <p>Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis. Phasellus pellentesque purus
+                in
+                massa. Aenean in pede. Phasellus ac libero ac tellus pellentesque semper. Sed ac felis. Sed commodo,
+                magna
+                quis lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui. </p>
+            <ul>
+                <li>List item one</li>
+                <li>List item two</li>
+                <li>List item three</li>
+            </ul>
+        </div>
+        <h5><a href="#">2011-02-05</a></h5>
+
+        <div>
+            <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis
+                egestas.
+                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+                mauris vel est. </p>
+
+            <p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu
+                ad
+                litora torquent per conubia nostra, per inceptos himenaeos. </p>
+        </div>
+    </div>
+</article>
+{% endblock %}
