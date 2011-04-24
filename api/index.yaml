@@ -1,0 +1,11 @@
+indexes:
+
+- kind: Retro
+  ancestor: no
+  properties:
+  - name: owner
+  - name: retro_on
+    direction: desc
+  - name: created_on
+    direction: desc
+

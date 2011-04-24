@@ -1,10 +1,7 @@
-from __future__ import unicode_literals, print_function, division
-
-import json
 import logging
 from google.appengine.ext import db
-
 from google.appengine.ext import webapp
+from django.utils import simplejson
 
 logger=logging.getLogger(__name__)
 
@@ -29,7 +26,7 @@ class RetroHandler(webapp.RequestHandler):
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(
-                json.dumps(
+                simplejson.dumps(
                         [{'goal': retro.goal or '',
                           'good': retro.good or '',
                           'bad': retro.bad or '',
@@ -40,7 +37,7 @@ class RetroHandler(webapp.RequestHandler):
 
     def post(self):
         logger.info(self.request.body)
-        self._add_retro(json.loads(self.request.body))
+        self._add_retro(simplejson.loads(self.request.body))
         self.response.set_status(202)
         self.response.out.write("")
 

@@ -1,0 +1,1 @@
+fab -f deploy.py stop_all copy_files install start_all status

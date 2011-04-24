@@ -3,3 +3,4 @@ Flask==0.6.1
 redis==2.2.2
 Fabric==1.0.0
 path.py
+httplib2

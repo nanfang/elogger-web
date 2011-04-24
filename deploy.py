@@ -32,3 +32,6 @@ def start_all():
 def status():
     with cd(PACKAGE_DIR):
         run('. %s/bin/activate && supervisorctl status' % PYTHON_ENV_DIR)
+
+def deploy_api():
+    local('~/Application/google_appengine/appcfg.py update api/')
