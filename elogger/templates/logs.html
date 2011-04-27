@@ -11,7 +11,7 @@
         function showLogs(date) {
             var currentYear = date.year();
 
-            $.getJSON("event-log/" + currentYear, function(data) {
+            $.getJSON("logs/" + currentYear, function(data) {
                 while (date.year() == currentYear) {
                     var date_str = date.format("yyyy-MM-dd");
                     var day = date.date().getDay();
@@ -27,7 +27,7 @@
                 $(".log_content").editInPlace({
                     save_if_nothing_changed:true,
                     cancel_button:'',
-                    url: "event-log/" + currentYear,
+                    url: "logs/" + currentYear,
                     default_text: "",
                     bg_over: "#cff",
                     field_type: "textarea",

@@ -9,17 +9,17 @@
             $('article.tabs section').removeClass('current');
             $(this).closest('section').addClass('current');
         });
-        var tasks = {};
+        var notes = {};
         // TODO: try autosave plugin or write one
         var saving_stated = false;
-        var save_task = function(task_name, task_value) {
+        var save_note = function(task_name, task_value) {
             if (!saving_stated) {
                 saving_stated = true;
                 var data = {};
                 data[task_name] = task_value;
                 setTimeout(function() {
                     $.post("{{url_for('save')}}", data, function(data) {
-                        tasks[task_name] = task_value;
+                        notes[task_name] = task_value;
                         $('#saved').removeClass('unsaved').addClass('saved');
                     });
                 }, 2000);
@@ -28,14 +28,14 @@
         };
 
         $.each($('textarea'), function() {
-            tasks[$(this).data('key')] = $(this).val();
+            notes[$(this).data('key')] = $(this).val();
         });
 
 
         $('textarea').keyup(function(event) {
-            if ($(this).val() != tasks[$(this).data('key')]) {
+            if ($(this).val() != notes[$(this).data('key')]) {
                 $('#saved').removeClass('saved').addClass('unsaved');
-                save_task($(this).data('key'), $(this).val());
+                save_note($(this).data('key'), $(this).val());
             }
         });
 
@@ -57,11 +57,13 @@
                 <li><a href="#follow_up">Follow Up</a></li>
                 <li><a href="#hold">Hold</a></li>
                 <li><a href="#archive">Archive</a></li>
+                <li><a href="#scattered">Scattered</a></li>
             </ul>
             <div id="inbox"><textarea data-key="inbox"  class="tasks active">{{inbox}}</textarea></div>
             <div id="follow_up"><textarea data-key="follow_up" class="tasks inactive">{{follow_up}}</textarea></div>
             <div id="hold" ><textarea data-key="hold" class="tasks inactive">{{hold}}</textarea></div>
             <div id="archive" ><textarea data-key="archive" class="tasks inactive">{{archive}}</textarea></div>
+            <div id="scattered" ><textarea data-key="scattered" class="tasks inactive">{{scattered}}</textarea></div>
         </div>
     </div>
     <span id="saved" class="unsaved">Saved</span>

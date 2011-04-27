@@ -6,19 +6,19 @@ from flask import Module
 from elogger.views.auth import requires_auth
 from elogger.database import redis
 
-eventlogs = Module(__name__)
+logs = Module(__name__)
 
-@eventlogs.route('/event-log')
+@logs.route('/logs')
 @requires_auth
-def event_log():
-    return render_template('event-log.html', user=session['username'])
+def index():
+    return render_template('logs.html', user=session['username'])
 
-@eventlogs.route('/event-log/<int:year>')
+@logs.route('/logs/<int:year>')
 @requires_auth
 def annual_log(year):
     return jsonify(redis.hgetall('%s:event-log:%s' % (session['username'], year)))
 
-@eventlogs.route('/event-log/<int:year>', methods=['POST', 'PUT'])
+@logs.route('/logs/<int:year>', methods=['POST', 'PUT'])
 @requires_auth
 def save_log(year):
     redis.hset('%s:event-log:%s' % (session['username'], year), request.form['element_id'], request.form['update_value'])
