@@ -27,7 +27,9 @@ class RetroHandler(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(
                 simplejson.dumps(
-                        [{'goal': retro.goal or '',
+                        [{
+                          'id': retro.key().id(),
+                          'goal': retro.goal or '',
                           'good': retro.good or '',
                           'bad': retro.bad or '',
                           'action': retro.action or '',

@@ -8,39 +8,50 @@
 <script type="text/javascript" src="../static/js/jquery-ui-1.8.11.custom.min.js"></script>
 
 <script type="text/javascript">
+    function new_retro(retro_form, retro_data) {
+//        retro_form
+        
+        retro_form.dialog({
+                    modal: true,
+                    title: "Add New Retrospective",
+                    width: 1000,
+                    height: 600,
+                    buttons: [
+                        {
+                            "text": "Save",
+                            "class": "submit",
+                            "click": function() {
+                                $("#new_form > input[name='retro_on']").val($.date().format("yyyy-MM-dd"));
+                                $("#new_form").submit();
+                            }
+                        },
+                        {
+                            "text": "Cancel",
+                            "class": "cancel",
+                            "click": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    ],
+                    resizable: false,
+                    draggable: false
+
+                });
+    }
     $(function() {
         $("#accordion").accordion({
                     collapsible: true,
                     active:false
                 });
 
-        $("#new").click(function() {
-            $("#new_form_dialog").dialog({
-                        modal: true,
-                        title: "Add New Retrospective",
-                        width: 1000,
-                        height: 800,
-                        buttons: [
-                            {
-                                "text": "Save",
-                                "class": "submit",
-                                "click": function() {
-                                    $("#new_form > input[name='retro_on']").val($.date().format("yyyy-MM-dd"));
-                                    $("#new_form").submit();
-                                }
-                            },
-                            {
-                                "text": "Cancel",
-                                "class": "cancel",
-                                "click": function() {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        ],
-                        resizable: false,
-                        draggable: false
+        $("button.new").click(function() {
+            new_retro($("#new_form_dialog"), {});
+        });
 
-                    });
+        $("button.clone").click(function() {
+
+
+            new_retro($("#new_form_dialog"), {});
         });
 
     });
@@ -51,7 +62,7 @@
 {% block content %}
 <article> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
     <h4>Retrospective</h4>
-    <button id="new">New Retro</button>
+    <button class="new">New Retro</button>
 
 
     <div id="accordion">
@@ -63,19 +74,32 @@
                 <tbody>
                 <tr>
                     <td>Goal</td>
-                    <td><pre>{{retro.goal}}</pre></td>
+                    <td>
+                        <pre>{{retro.goal}}</pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Good</td>
-                    <td><pre>{{retro.good}}</pre></td>
+                    <td>
+                        <pre>{{retro.good}}</pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Bad</td>
-                    <td><pre>{{retro.bad}}</pre></td>
+                    <td>
+                        <pre>{{retro.bad}}</pre>
+                    </td>
                 </tr>
                 <tr>
                     <td>Action</td>
-                    <td><pre>{{retro.action}}</pre></td>
+                    <td>
+                        <pre>{{retro.action}}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="clone"> Clone</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -88,8 +112,8 @@
 </article>
 
 
-<div  id="new_form_dialog" class="hidden">
-    <form method="POST"  id="new_form" action="">
+<div id="new_form_dialog" class="hidden">
+    <form method="POST" id="new_form" action="">
         <fieldset>
             <legend>Goal</legend>
             <textarea name="goal"></textarea>
