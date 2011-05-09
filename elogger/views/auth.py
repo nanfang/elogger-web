@@ -12,7 +12,7 @@ auth = Module(__name__)
 
 @auth.route('/')
 def index():
-    return redirect(url_for('logs.index'))
+    return redirect(url_for('elogs.index'))
 
 @auth.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
@@ -22,7 +22,7 @@ def sign_in():
 
         if login_name and password == redis.get('%s:password' % login_name):
             session['username'] = request.form['username']
-            return redirect(url_for('logs.index'))
+            return redirect(url_for('elogs.index'))
 
     return render_template('sign-in.html')
 
