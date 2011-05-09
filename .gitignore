@@ -50,3 +50,5 @@ cover
 
 # suds cache
 suds/
+
+.cache

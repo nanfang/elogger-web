@@ -9,13 +9,15 @@
 
 <script type="text/javascript">
     function new_retro(retro_form, retro_data) {
-//        retro_form
-        
+        retro_form.find('textarea[name="goal"]').val(retro_data.goal);
+        retro_form.find('textarea[name="good"]').val(retro_data.good);
+        retro_form.find('textarea[name="bad"]').val(retro_data.bad);
+        retro_form.find('textarea[name="action"]').val(retro_data.action);
         retro_form.dialog({
                     modal: true,
                     title: "Add New Retrospective",
                     width: 1000,
-                    height: 600,
+                    height: 700,
                     buttons: [
                         {
                             "text": "Save",
@@ -49,9 +51,12 @@
         });
 
         $("button.clone").click(function() {
-
-
-            new_retro($("#new_form_dialog"), {});
+            new_retro($("#new_form_dialog"), {
+                        goal:$(this).parents('table').find('pre.goal').html(),
+                        good:$(this).parents('table').find('pre.good').html(),
+                        bad:$(this).parents('table').find('pre.bad').html(),
+                        action:$(this).parents('table').find('pre.action').html()
+                    });
         });
 
     });
@@ -75,25 +80,25 @@
                 <tr>
                     <td>Goal</td>
                     <td>
-                        <pre>{{retro.goal}}</pre>
+                        <pre class="goal">{{retro.goal}}</pre>
                     </td>
                 </tr>
                 <tr>
                     <td>Good</td>
                     <td>
-                        <pre>{{retro.good}}</pre>
+                        <pre class="good">{{retro.good}}</pre>
                     </td>
                 </tr>
                 <tr>
                     <td>Bad</td>
                     <td>
-                        <pre>{{retro.bad}}</pre>
+                        <pre class="bad">{{retro.bad}}</pre>
                     </td>
                 </tr>
                 <tr>
                     <td>Action</td>
                     <td>
-                        <pre>{{retro.action}}</pre>
+                        <pre class="action">{{retro.action}}</pre>
                     </td>
                 </tr>
                 <tr>
