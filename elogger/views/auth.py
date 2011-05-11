@@ -26,6 +26,11 @@ def sign_in():
 
     return render_template('sign-in.html')
 
+@auth.route('/direction', methods=['PUT', 'POST'])
+def update_direction():
+    direction=request.form['update_value']
+    redis.set('direction:'+session['username'], direction)
+    return direction
 
 @auth.route('/sign-out')
 def sign_out():
@@ -41,3 +46,4 @@ def requires_auth(f):
 
         return f(*args, **kwargs)
     return decorated
+

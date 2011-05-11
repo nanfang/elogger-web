@@ -5,6 +5,8 @@
     <title>Welcome to eLogger! Enjoy it!</title>
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css"/>
     <script type="text/javascript" src="../static/js/jquery-1.5.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.editinplace.js"></script>
+
     {% block head %}{% endblock %}
 </head>
 
@@ -24,6 +26,9 @@
                 <li><a href="/retro" class="{% if '/retro' == request.path %} selected {% endif %}">Retro</a></li>
             </ul>
         </nav>
+        <div class="direction clear">
+            <pre>{{direction}}</pre>
+        </div>
         <div class="clear">
             <div class="profile">Dear {{session['username']}}, welcome to eLogger! <a href="/sign-out">Logout</a></div>
         </div>
@@ -41,4 +46,17 @@
 </section>
 <!-- Closing the #page section -->
 </body>
+<script type="text/javascript">
+        $(".direction").editInPlace({
+                    save_if_nothing_changed:true,
+                    cancel_button:'',
+                    url: "/direction",
+                    default_text: "",
+                    bg_over: "#cff",
+                    field_type: "textarea",
+                    textarea_rows: "2",
+                    textarea_cols: "50"
+                });
+
+    </script>
 </html>
