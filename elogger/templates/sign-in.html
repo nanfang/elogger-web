@@ -4,6 +4,11 @@
     <title>Welcome to eLogger! Enjoy it!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css"/>
+    <script language="javascript">
+        $(document).ready(function(){
+            $('#username').focus();
+        });
+    </script>
 </head>
 
 <body>
@@ -16,7 +21,7 @@
     <h4>Sign In</h4>
 
     <form action="/sign-in" method="POST">
-        <label>Username:</label><input type="text" class="login_input" name='username'/>
+        <label>Username:</label><input type="text" class="login_input" name='username' id="username" />
         <label>Password:</label><input type="password" class="login_input" name='password'/>
         <input type="submit" value="Sign In" class="button"/>
     </form>

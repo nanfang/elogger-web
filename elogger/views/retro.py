@@ -22,19 +22,17 @@ def index():
 @retro.route('/retro', methods=['POST'])
 @requires_auth
 def save():
-
-    body=dict(
+    body = dict(
         goal=request.form['goal'],
         good=request.form['good'],
         bad=request.form['bad'],
         action=request.form['action'],
         retro_on=request.form['retro_on'],
         owner=session['username'],
-    )
+        )
 
-    resp, content = h.request(retro_api,
-                              "POST",
-                              body=json.dumps(body),
-                              headers={'content-type': 'application/json'})
+    h.request(retro_api, "POST",
+              body=json.dumps(body),
+              headers={'content-type': 'application/json'})
 
     return redirect(url_for('retro.index'))
