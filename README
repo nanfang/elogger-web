@@ -1,1 +1,15 @@
-Web application for log personal events by day, week, month, and year.
+Web application to log personal events by day, week, month, and year.
+Main features:
+1. Event Log
+    Daily work/study logs
+2. Notes
+    Note pads
+3. Retro
+    Retrospective tool
+
+Todos：
+1. Tasks
+    Simple todo list like 'Remember the milk', but with better user experience and easy to use
+2. Integration Retro with Event Log and Tasks
+    Users can make their retro with the view of current week logs and todo list
+
