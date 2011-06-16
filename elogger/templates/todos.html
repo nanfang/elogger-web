@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block head%}
+<link rel="stylesheet" type="text/css" href="../static/css/todos.css">
+
+<script type="text/javascript" src="../static/js/jquery.glob.js"></script>
+<script type="text/javascript" src="../static/js/date.js"></script>
+<script type="text/javascript" src="../static/js/jquery.tmpl.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        var tops = [];
+        var comings = [];
+
+        function get_tops(success) {
+            $.getJSON("todos/tops", function(data) {
+                tops = data;
+                if (success) {
+                    success();
+                }
+            });
+        }
+
+        function get_comings(success) {
+            $.getJSON("todos/comings", function(data) {
+                comings = data;
+                if (success) {
+                    success();
+                }
+            });
+        }
+
+        function show_tops() {
+            $("#tops").html('');
+            $.each(tops, function(idx, todo) {
+                $("#todo_template").tmpl({
+                            title:todo.t
+                        }).appendTo("#tops");
+            });
+        }
+
+        function show_comings() {
+            $.each(comings, function(idx, todo) {
+                $("#todo_template").tmpl({
+                            no: tops.length + 1,
+                            title: todo.t
+                        }).appendTo("#comings");
+            });
+        }
+
+        function create_todo(content) {
+            $.post("{{url_for('create')}}", {todo:content},
+                    function(data) {
+
+                        todo=$.parseJSON(data);
+                        operation=todo.op;
+                        update_list=todo.l;
+                        tops.push({t:todo.t});
+                        show_tops();
+                    }
+            );
+        }
+
+        get_tops(show_tops);
+            
+        $("#tops").sortable({
+                    change: function(event, ui) {
+                        // 
+                    }
+                });
+        $("#tops").disableSelection();
+
+        $("#create_todo").keydown(function(event) {
+            if (event.keyCode == '13') {
+                create_todo($(this).val());
+            }
+
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+<article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+
+    <h4>Todos</h4>
+
+    <div class="line"></div>
+    <div class="articleBody clear ">
+        <ol id="tops" class="tops"></ol>
+        <input type="text" id="create_todo"/>
+        <ol id="comings" class="comings"></ol>
+        <span>more ...</span>
+    </div>
+</article>
+<script id="todo_template" type="text/x-jquery-tmpl">
+    <li class="todo">
+        <!--<span class="no">${no}</span>-->
+        <span class="title">${title}</span>
+    </li>
+</script>
+{% endblock %}

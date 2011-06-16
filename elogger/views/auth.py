@@ -22,7 +22,7 @@ def sign_in():
 
         if login_name and password == redis.get('%s:password' % login_name):
             session['username'] = request.form['username']
-            return redirect(url_for('elogs.index'))
+            return redirect(url_for('todos.index'))
 
     return render_template('sign-in.html')
 

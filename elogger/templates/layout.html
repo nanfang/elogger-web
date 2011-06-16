@@ -3,15 +3,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Welcome to eLogger! Enjoy it!</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/styles.css"/>
-
-    <script src="https://www.google.com/jsapi?key=ABQIAAAA9z9XHD2BlrQznYd1bni8rhTKbv-ChKx_vgUoQbS3SsKW8kIv4RTgPVJizbfWhlt7tviaKY2GztdLig" type="text/javascript"></script>
-    <script>
-        google.load("jquery", "1.6.1");
-        google.load("jqueryui", "1.8.13");
-    </script>
+    <link rel="stylesheet" href="../static/css/styles.css" type="text/css"  media="all"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui-1.8.11.custom.css" type="text/css" media="all"/>
+    <script type="text/javascript" src="../static/js/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-ui-1.8.11.custom.min.js"></script>
     <script type="text/javascript" src="../static/js/jquery.editinplace.js"></script>
-
     {% block head %}{% endblock %}
 </head>
 
@@ -26,6 +22,7 @@
         </hgroup>
         <nav class="clear"> <!-- The nav link semantically marks your main site navigation -->
             <ul>
+                <li><a href="/todos" class="{% if '/todos' == request.path %} selected {% endif %}">Todos</a></li>
                 <li><a href="/logs" class="{% if '/logs' == request.path %} selected {% endif %}">Logs</a></li>
                 <li><a href="/notes" class="{% if '/notes' == request.path %} selected {% endif %}">Notes</a></li>
                 <li><a href="/retro" class="{% if '/retro' == request.path %} selected {% endif %}">Retro</a></li>
@@ -52,16 +49,16 @@
 <!-- Closing the #page section -->
 </body>
 <script type="text/javascript">
-        $(".direction").editInPlace({
-                    save_if_nothing_changed:true,
-                    cancel_button:'',
-                    url: "/direction",
-                    default_text: "",
-                    bg_over: "#cff",
-                    field_type: "textarea",
-                    textarea_rows: "2",
-                    textarea_cols: "50"
-                });
+    $(".direction").editInPlace({
+                save_if_nothing_changed:true,
+                cancel_button:'',
+                url: "/direction",
+                default_text: "",
+                bg_over: "#cff",
+                field_type: "textarea",
+                textarea_rows: "2",
+                textarea_cols: "50"
+            });
 
-    </script>
+</script>
 </html>
