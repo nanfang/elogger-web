@@ -1,18 +1,17 @@
 from __future__ import unicode_literals, print_function, division
 from functools import wraps
 from flask import   render_template
-
 from flask import Module
 from flask import  session, redirect, url_for, request
-
 from elogger.database import redis
 
 auth = Module(__name__)
-
+DEFAULT = 'elogs.index'
+SIGN_IN_TMP = 'sign-in.html'
 
 @auth.route('/')
 def index():
-    return redirect(url_for('elogs.index'))
+    return redirect(url_for(DEFAULT))
 
 @auth.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
@@ -22,9 +21,9 @@ def sign_in():
 
         if login_name and password == redis.get('%s:password' % login_name):
             session['username'] = request.form['username']
-            return redirect(url_for('todos.index'))
+            return redirect(url_for(DEFAULT))
 
-    return render_template('sign-in.html')
+    return render_template(SIGN_IN_TMP)
 
 @auth.route('/direction', methods=['PUT', 'POST'])
 def update_direction():
@@ -42,7 +41,7 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if 'username' not in session:
-            return render_template('sign-in.html')
+            return render_template(SIGN_IN_TMP)
 
         return f(*args, **kwargs)
     return decorated

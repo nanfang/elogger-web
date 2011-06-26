@@ -9,73 +9,85 @@
 
 <script type="text/javascript">
     $(function() {
-        var tops = [];
-        var comings = [];
+        var uploading = false;
+        var template = $("#todo_template");
+        var targets = {
+            "T":"#tops",
+            "C":"#comings"
+        };
 
-        function get_tops(success) {
-            $.getJSON("todos/tops", function(data) {
-                tops = data;
-                if (success) {
-                    success();
-                }
+        var operations = {
+            "A": append_todo,
+            "P": prepend_todo
+        };
+
+        function append_todo(target, todo) {
+            make_item(todo).appendTo(target);
+        }
+
+        function prepend_todo(target, todo) {
+            make_item(todo).prependTo(target);
+        }
+
+        function refresh(url, target) {
+            $.getJSON(url, function(data) {
+                $(target).html('');
+                $.each(data, function(idx, todo) {
+                    append_todo(target, todo);
+                });
             });
         }
 
-        function get_comings(success) {
-            $.getJSON("todos/comings", function(data) {
-                comings = data;
-                if (success) {
-                    success();
-                }
-            });
+        function make_item(todo) {
+            return template.tmpl({
+                        id:todo.id,
+                        title:todo.t,
+                        score:todo.s
+                    }
+            )
         }
 
-        function show_tops() {
-            $("#tops").html('');
-            $.each(tops, function(idx, todo) {
-                $("#todo_template").tmpl({
-                            title:todo.t
-                        }).appendTo("#tops");
-            });
-        }
-
-        function show_comings() {
-            $.each(comings, function(idx, todo) {
-                $("#todo_template").tmpl({
-                            no: tops.length + 1,
-                            title: todo.t
-                        }).appendTo("#comings");
-            });
-        }
 
         function create_todo(content) {
+            uploading = true;
             $.post("{{url_for('create')}}", {todo:content},
                     function(data) {
+                        var result = $.parseJSON(data);
+                        var operation = operations[result.op];
+                        var target = targets[result.t];
+                        var todo = result.todo;
 
-                        todo=$.parseJSON(data);
-                        operation=todo.op;
-                        update_list=todo.l;
-                        tops.push({t:todo.t});
-                        show_tops();
+                        operation(target, todo);
+                        uploading = false;
                     }
             );
         }
 
-        get_tops(show_tops);
-            
         $("#tops").sortable({
-                    change: function(event, ui) {
-                        // 
+                    receive: function(event, ui) {
+                        sortableIn = 1;
+                    },
+                    over: function(e, ui) {
+                        sortableIn = 1;
+                    },
+                    out: function(e, ui) {
+                        sortableIn = 0;
+                    },
+                    beforeStop: function(e, ui) {
+                        if (sortableIn == 0) {
+                            ui.item.remove();
+                        }
                     }
-                });
-        $("#tops").disableSelection();
+                }).disableSelection();
 
         $("#create_todo").keydown(function(event) {
-            if (event.keyCode == '13') {
+            if (event.keyCode == '13' && !uploading) {
                 create_todo($(this).val());
             }
-
         });
+
+        refresh("todos/tops", targets["T"]);
+        refresh("todos/comings", targets["C"]);
     });
 </script>
 {% endblock %}
@@ -93,8 +105,7 @@
     </div>
 </article>
 <script id="todo_template" type="text/x-jquery-tmpl">
-    <li class="todo">
-        <!--<span class="no">${no}</span>-->
+    <li data-score="${score}" data-id="${id}">
         <span class="title">${title}</span>
     </li>
 </script>

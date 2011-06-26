@@ -23,7 +23,7 @@ body {
 /* Hyperlink Styles: */
 
 a, a:visited {
-    color:#c71585;
+    color: #c71585;
     text-decoration: none;
     outline: none;
 }
@@ -74,6 +74,26 @@ h4 {
 p {
     line-height: 20px;
     padding-bottom: 1px;
+}
+
+/* forms */
+fieldset {
+    border: 0;
+}
+
+fieldset li {
+    list-style-type: none;
+    padding:0;
+}
+
+fieldset label {
+    width: 110px;
+    display: inline-block;
+    padding:0;
+    text-align:right;
+    /*line-height: 1.8;*/
+    /*padding-left: 5px;*/
+    /*width: 200px;*/
 }
 
 .line {
@@ -475,4 +495,6 @@ textarea.tasks {
     display: none;
 }
 
-
+.alpha{
+    font-size:10px;
+}

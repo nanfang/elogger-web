@@ -22,10 +22,10 @@
         </hgroup>
         <nav class="clear"> <!-- The nav link semantically marks your main site navigation -->
             <ul>
-                <li><a href="/todos" class="{% if '/todos' == request.path %} selected {% endif %}">Todos</a></li>
                 <li><a href="/logs" class="{% if '/logs' == request.path %} selected {% endif %}">Logs</a></li>
                 <li><a href="/notes" class="{% if '/notes' == request.path %} selected {% endif %}">Notes</a></li>
                 <li><a href="/retro" class="{% if '/retro' == request.path %} selected {% endif %}">Retro</a></li>
+                <li><a href="/todos" class="{% if '/todos' == request.path %} selected {% endif %}">Todos<span class='alpha'>(alpha)</span></a></li>
             </ul>
         </nav>
         <div class="direction clear">

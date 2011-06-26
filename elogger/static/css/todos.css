@@ -2,31 +2,35 @@
     color: red;
 }
 
-#tops {
-    list-style-type: none;
-    margin-top:10px;
-    margin-bottom:10px;
+input#create_todo {
+    width: 400px;
+}
+
+ol {
+    margin-top: 10px;
+    margin-bottom: 10px;
     width: 60%;
+    list-style-type: none;
 }
 
-input#create_todo{
-    width:400px;
-}
 ol.tops {
-   list-style-type:none;
-   counter-reset:sectioncounter;
-} 
+    counter-reset: sectioncounter;
+}
 
-ol.tops > li  {
+ol.tops > li {
     color: blue;
 }
 
-ol.tops > li:before  {
-   content: counter(sectioncounter);
-   counter-increment: sectioncounter;
+ol.tops > li:before {
+    content: counter(sectioncounter);
+    counter-increment: sectioncounter;
 }
 
-ol.tops > li:first-child{
-    color:red
+ol.tops > li:first-child {
+    color: red
 }
 
+
+ol.comings > li {
+    color: green;
+}
