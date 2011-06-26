@@ -9,4 +9,9 @@ class MyRedis(Redis):
                 result[k] = v.decode('utf-8')
         return result
 
+    def get(self, key):
+        result = super(MyRedis, self).get(key)
+        if result:
+            result=result.decode('utf-8')
+        return result
 redis = MyRedis()
