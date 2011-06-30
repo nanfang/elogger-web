@@ -18,6 +18,7 @@
                 var data = {};
                 data[task_name] = task_value;
                 setTimeout(function() {
+                    _gaq.push(['_trackEvent', 'notes', 'save', task_name]);
                     $.post("{{url_for('save')}}", data, function(data) {
                         notes[task_name] = task_value;
                         $('#saved').removeClass('unsaved').addClass('saved');

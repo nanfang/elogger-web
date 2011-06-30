@@ -5,9 +5,10 @@
 <script type="text/javascript" src="../static/js/date.js"></script>
 <script type="text/javascript" src="../static/js/jquery.tmpl.js"></script>
 
-<script  type="text/javascript">
+<script type="text/javascript">
+    
     $(function() {
-        function showLogs(date) {
+        (function showLogs(date) {
             var currentYear = date.year();
 
             $.getJSON("logs/" + currentYear, function(data) {
@@ -16,27 +17,31 @@
                     var day = date.date().getDay();
 
                     $("#log_detail").tmpl({
-                        clazz: day == 0 ? 'weekend' : 'workingDay',
-                        date: date_str,
-                        log: data[date_str]
-                    }).appendTo("#logs");
+                                clazz: day == 0 ? 'weekend' : 'workingDay',
+                                date: date_str,
+                                log: data[date_str]
+                            }).appendTo("#logs");
                     date = date.adjust("D", -1);
                 }
 
                 $(".log_content").editInPlace({
-                    save_if_nothing_changed:true,
-                    cancel_button:'',
-                    url: "logs/" + currentYear,
-                    default_text: "",
-                    bg_over: "#cff",
-                    field_type: "textarea",
-                    textarea_rows: "15",
-                    textarea_cols: "50"
-                });
+                            save_if_nothing_changed:true,
+                            cancel_button:'',
+                            url: "logs/" + currentYear,
+                            default_text: "",
+                            bg_over: "#cff",
+                            field_type: "textarea",
+                            textarea_rows: "15",
+                            textarea_cols: "50"
+                        });
             });
-        }
+        })($.date());
 
-        showLogs($.date());
+        $('.log_content').click(function() {
+            // event tracking
+            _gaq.push(['_trackEvent', 'event-log', 'save', 'save a event log to server']);
+            // end of event tracking
+        });
     });
 </script>
 {% endblock %}

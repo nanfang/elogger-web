@@ -27,6 +27,7 @@ def install():
 
 def start_all():
     with cd(PACKAGE_DIR):
+        run('. %s/bin/activate && supervisorctl stop all' % PYTHON_ENV_DIR)
         run('. %s/bin/activate && supervisorctl reload' % PYTHON_ENV_DIR)
 
 def status():
