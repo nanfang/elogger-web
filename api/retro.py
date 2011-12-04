@@ -2,6 +2,7 @@ import logging
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from django.utils import simplejson
+from auth import basic_auth
 
 logger=logging.getLogger(__name__)
 
@@ -17,6 +18,7 @@ class Retro(db.Model):
     created_on = db.DateTimeProperty(auto_now_add=True)
 
 class RetroHandler(webapp.RequestHandler):
+    @basic_auth
     def get(self):
         owner=self.request.get('owner')
         if owner:
