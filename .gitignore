@@ -52,3 +52,4 @@ cover
 suds/
 
 .cache
+*/keys.py
