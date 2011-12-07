@@ -9,3 +9,11 @@ indexes:
   - name: created_on
     direction: desc
 
+- kind: DayLog
+  ancestor: no
+  properties:
+  - name: owner
+  - name: day
+  - name: month
+  - name: year
+

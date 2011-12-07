@@ -12,20 +12,15 @@ class Retro(db.Model):
     bad = db.TextProperty()
     action = db.TextProperty()
     
-    owner = db.StringProperty(multiline=False)
-    retro_on = db.StringProperty(multiline=False)
+    owner = db.StringProperty()
+    retro_on = db.StringProperty()
 
     created_on = db.DateTimeProperty(auto_now_add=True)
 
 class RetroHandler(webapp.RequestHandler):
     @basic_auth
     def get(self):
-        owner=self.request.get('owner')
-        if owner:
-            retros = db.GqlQuery("SELECT * FROM Retro WHERE owner = :1 ORDER BY retro_on DESC, created_on DESC", owner)
-        else:
-            retros = db.GqlQuery("SELECT * FROM Retro ORDER BY retro_on DESC, created_on DESC")
-
+        retros = db.GqlQuery("SELECT * FROM Retro WHERE owner = :1 ORDER BY retro_on DESC, created_on DESC", owner=self.user.key_name)
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(
                 simplejson.dumps(
@@ -36,9 +31,9 @@ class RetroHandler(webapp.RequestHandler):
                           'bad': retro.bad or '',
                           'action': retro.action or '',
                           'retro_on': retro.retro_on or '',
-                          'owner': retro.owner,
                          } for retro in retros]))
 
+    @basic_auth
     def post(self):
         logger.info(self.request.body)
         self._add_retro(simplejson.loads(self.request.body))
@@ -51,6 +46,6 @@ class RetroHandler(webapp.RequestHandler):
         retro.good=retro_dict.get('good')
         retro.bad=retro_dict.get('bad')
         retro.action=retro_dict.get('action')
-        retro.owner=retro_dict.get('owner')
+        retro.owner=self.user.key_name
         retro.retro_on=retro_dict.get('retro_on')
         retro.put()

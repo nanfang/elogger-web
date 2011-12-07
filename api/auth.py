@@ -1,15 +1,16 @@
 import base64
 import keys
+from google.appengine.ext import db
 
 def basic_auth(func):
     def callf(webappRequest, *args, **kwargs):
-        if auth_user(webappRequest):
+        if _auth_user(webappRequest):
             return func(webappRequest, *args, **kwargs)
         webappRequest.response.set_status(401, message="Authorization Required")
         webappRequest.response.headers['WWW-Authenticate'] = 'Basic realm="eLogger"'
     return callf
 
-def auth_user(webappRequest):
+def _auth_user(webappRequest):
     auth_header = webappRequest.request.headers.get('Authorization')
     if not auth_header:
         return False
@@ -26,3 +27,7 @@ def auth_user(webappRequest):
     webappRequest.user = user
     
     return True
+
+class AuthUser(db.Model):
+    api_key = db.StringProperty()
+
