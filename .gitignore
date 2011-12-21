@@ -1,19 +1,4 @@
-# Maven build dir
-target/
-
-# celery monitor
-djcelerymon.db
-celerybeat-schedule
-
-# IntelliJ IDEA project files
-*.ipr
-*.iml
-*.iws
-*.log
-*.idea
 .idea/
-
-# Python
 *.pyc
 *.egg-info/
 
@@ -26,9 +11,6 @@ celerybeat-schedule
 # virtual python env
 python-env*/
 
-# gradle 
-.gradle/
-build/
 
 # vim
 tags
@@ -48,8 +30,5 @@ nosetests.xml
 cover
 *.py,cover
 
-# suds cache
-suds/
-
 .cache
-*/keys.py
+secret.py

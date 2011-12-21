@@ -4,7 +4,7 @@ from paver.easy import *
 setup(
         name="eLogger",
         packages=['elogger'],
-        version="0.1",
+        version="2.0",
         )
 
 @task
