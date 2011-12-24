@@ -23,7 +23,7 @@ def copy_files():
 
 def install():
     with cd(PACKAGE_DIR):
-        run('. %s/bin/activate && pip install -r dependencies.txt && paver develop' % PYTHON_ENV_DIR)
+        run('. %s/bin/activate && pip install -r DEPENDENCIES && paver develop' % PYTHON_ENV_DIR)
 
 def start_all():
     with cd(PACKAGE_DIR):

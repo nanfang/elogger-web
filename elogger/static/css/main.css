@@ -1,0 +1,154 @@
+/* css reset, yahoo style */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,
+form,fieldset,input,textarea,p,blockquote,th,td {
+    padding: 0;
+    margin: 0;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+fieldset,img {
+    border: 0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+    font-weight: normal;
+    font-style: normal;
+}
+ol,ul {
+    list-style: none;
+}
+caption,th {
+    text-align: left;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-weight: normal;
+    font-size: 100%;
+}
+q:before,q:after {
+    content:'';
+}
+abbr,acronym { border: 0;
+}
+
+
+/* general styles */
+body {
+    color: #491c09;
+    font-size: 12px;
+    line-height: 140%;
+    background: url(../images/bg.jpg) top center fixed;
+}
+
+header {
+    position: relative;
+    margin: 0 auto;
+    width: 1017px;
+    height: 150px;
+    background: url(../images/top_roll.png) no-repeat;
+}
+
+header img {
+    float: left;
+    padding: 5px 30px;
+}
+
+article {
+    clear: both;
+    position: relative;
+    margin: 0 auto;
+    width: 1017px;
+    height: 400px;
+    background: url(../images/body_roll.png) top center repeat-y;
+}
+
+article section {
+    clear: both;
+    position: relative;
+    margin: 0 auto;
+    width: 900px;
+}
+
+/* elements styles*/
+#user {
+    float: right;
+    padding: 10px 60px 0 0;
+    font-family: "Britannic Bold", serif;
+    color: #5c361c;
+    font-weight: bold;
+}
+
+#month {
+    clear: both;
+    font-size: 20px;
+    padding: 40px 60px;
+    color: #491c09;
+    font-weight: bold;
+}
+
+/* class */
+.log:before,
+.log:after {
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.log:after {
+    clear: both;
+}
+
+.log {
+    padding-top: 10px;
+}
+
+.log_date {
+    float: left;
+    text-align: center;
+    width: 125px;
+    font-size: 16px;
+}
+
+.log_content {
+    text-indent: 0;
+    margin-left: 130px;
+    font-size: 12px;
+}
+
+.log_content p {
+    margin-bottom: 3px;
+}
+
+footer {
+    color: #af8053;
+    clear: both;
+    margin: 0 auto;
+    padding: 10px 0 0 0;
+    text-align: center;
+    vertical-align: bottom;
+    width: 1017px;
+    height: 56px;
+    background: url(../images/bottom_roll.png) no-repeat;
+}
+
+/* 
+tools
+*/
+
+.clearfix:after {
+    content: ".";
+    clear: both;
+    height: 0;
+    visibility: hidden;
+    display: block;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+.clearfix {
+    display: block;
+}
+			
