@@ -9,4 +9,4 @@ setup(
 
 @task
 def build_dep(options):
-    sh('pip install -q -r etc/DEPENDENCIES')
+    sh('pip install -q -r etc/DEPENDENCIES-PROD')

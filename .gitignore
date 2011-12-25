@@ -32,3 +32,4 @@ cover
 
 .cache
 secret.py
+config/prod.py

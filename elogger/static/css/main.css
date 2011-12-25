@@ -31,15 +31,6 @@ q:before,q:after {
 abbr,acronym { border: 0;
 }
 
-@font-face {
-    font-family: 'Jokerman';
-    src: url('../fonts/JOKERMAN.eot');
-    src: local('?'), url('../fonts/JOKERMAN.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
 /* general styles */
 body {
     margin-top: 10px;
@@ -67,7 +58,8 @@ article {
     position: relative;
     margin: 0 auto;
     width: 1017px;
-    height: 400px;
+    padding-bottom: 20px;
+    /*height: 400px;*/
     background: url(../images/body_roll.png) top center repeat-y;
 }
 
@@ -82,12 +74,13 @@ footer {
     color: #af8053;
     clear: both;
     margin: 0 auto;
-    padding: 10px 0 0 0;
+    padding: 20px 0 0 0;
     text-align: center;
     vertical-align: bottom;
     width: 1017px;
     height: 102px;
     background: url(../images/bottom_roll.png) no-repeat;
+    font-family: 'Comic Sans MS', serif;
 }
 
 a:link, a:active {
@@ -108,14 +101,16 @@ a:hover {
 #user {
     float: right;
     padding: 10px 60px 0 0;
-    font-family: "Britannic Bold", serif;
+    font-family: 'Comic Sans MS', serif;
     color: #5c361c;
     font-weight: bold;
+
 }
 
 #month {
+    font-family: 'Comic Sans MS', serif;
     position: absolute;
-    left: 30px;
+    left: 24px;
     top:80px;
     font-size: 20px;
     padding: 40px 60px;
@@ -124,9 +119,9 @@ a:hover {
 }
 
 #year {
-    font-family: 'Jokerman', serif;
+    font-family: 'Jokerman', 'Comic Sans MS', serif;
     position: absolute;
-    right: 30px;
+    right: 24px;
     top:50px;
     font-size: 20px;
     padding: 40px 60px;

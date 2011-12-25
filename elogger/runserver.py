@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 import tornado.ioloop
 import tornado.web
@@ -20,7 +21,7 @@ application = tornado.web.Application([
 ], **settings)
 
 if __name__ == "__main__":
-    port = 8080
+    port = sys.argv[1] if len(sys.argv) > 1 else 8000
     print('start server, listening %s' % port)
     application.listen(port)
     tornado.ioloop.IOLoop.instance().start()
