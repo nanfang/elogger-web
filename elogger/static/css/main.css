@@ -31,9 +31,18 @@ q:before,q:after {
 abbr,acronym { border: 0;
 }
 
+@font-face {
+    font-family: 'Jokerman';
+    src: url('../fonts/JOKERMAN.eot');
+    src: local('?'), url('../fonts/JOKERMAN.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 /* general styles */
 body {
+    margin-top: 10px;
     color: #491c09;
     font-size: 12px;
     line-height: 140%;
@@ -69,6 +78,32 @@ article section {
     width: 900px;
 }
 
+footer {
+    color: #af8053;
+    clear: both;
+    margin: 0 auto;
+    padding: 10px 0 0 0;
+    text-align: center;
+    vertical-align: bottom;
+    width: 1017px;
+    height: 102px;
+    background: url(../images/bottom_roll.png) no-repeat;
+}
+
+a:link, a:active {
+    color: #af8053;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #af8053;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #491c09;
+}
+
 /* elements styles*/
 #user {
     float: right;
@@ -79,12 +114,26 @@ article section {
 }
 
 #month {
-    clear: both;
+    position: absolute;
+    left: 30px;
+    top:80px;
     font-size: 20px;
     padding: 40px 60px;
     color: #491c09;
     font-weight: bold;
 }
+
+#year {
+    font-family: 'Jokerman', serif;
+    position: absolute;
+    right: 30px;
+    top:50px;
+    font-size: 20px;
+    padding: 40px 60px;
+    color: #491c09;
+    font-weight: bold;
+}
+
 
 /* class */
 .log:before,
@@ -108,6 +157,7 @@ article section {
     text-align: center;
     width: 125px;
     font-size: 16px;
+    font-family: cursive;
 }
 
 .log_content {
@@ -118,18 +168,6 @@ article section {
 
 .log_content p {
     margin-bottom: 3px;
-}
-
-footer {
-    color: #af8053;
-    clear: both;
-    margin: 0 auto;
-    padding: 10px 0 0 0;
-    text-align: center;
-    vertical-align: bottom;
-    width: 1017px;
-    height: 56px;
-    background: url(../images/bottom_roll.png) no-repeat;
 }
 
 /* 
@@ -151,4 +189,28 @@ tools
 .clearfix {
     display: block;
 }
-			
+
+.login {
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:900px;
+    height:500px;
+    margin-left:-450px;
+    margin-top:-250px;
+    z-index:1;
+}
+
+.login  .logo {
+    position: absolute;
+    top: 100px;
+    right:150px;
+}
+
+.login  .btn {
+    position: absolute;
+    top: 250px;
+    right:120px;
+    width: 200px;
+    margin:10px;
+}
