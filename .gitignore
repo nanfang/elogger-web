@@ -33,3 +33,4 @@ cover
 .cache
 secret.py
 config/prod.py
+.DS_Store
