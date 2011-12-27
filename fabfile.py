@@ -66,9 +66,10 @@ def stop():
 
 def start():
     virtualenv()
-    with prefix('. %s/bin/activate' % VIRTUALENV_DIR):
-        run('supervisorctl stop all')
-        run('supervisorctl reload')
+    with cd(DEPLOY_DIR):
+        with prefix('. %s/bin/activate' % VIRTUALENV_DIR):
+            run('supervisorctl stop all')
+            run('supervisorctl reload')
 
 def status():
     with cd(DEPLOY_DIR):
