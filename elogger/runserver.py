@@ -1,27 +1,43 @@
 import logging
 import os
 import sys
-
 import tornado.ioloop
 import tornado.web
-from elogger.views import MainHandler
+from elogger.views import MainHandler, LoginHandler
+from elogger import settings
 
+DEFAULT_PORT = 8000
 logger = logging.getLogger(__name__)
 
 settings = {
-    'template_path':os.path.join(os.path.dirname(__file__), "templates"),
+    'template_path': os.path.join(os.path.dirname(__file__), "templates"),
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "cookie_secret": "81iETzKXUAGaYckL5gEmGeJJFuYh8EQnp2XdTP1o/Vo=",
-    # TODO config it
-    'debug': True,
-}
+    'debug': settings.DEBUG,
+    "login_url": "/login",
+
+    'pycket': {
+        'engine': 'redis',
+        'storage': {
+            'host': 'localhost',
+            'port': 6379,
+            'db_sessions': 10,
+            'db_notifications': 11,
+            },
+        'cookies': {
+            'expires_days': 120,
+            },
+        },
+    }
 
 application = tornado.web.Application([
     (r"/", MainHandler),
+    (r"/login", LoginHandler),
+
 ], **settings)
 
 if __name__ == "__main__":
-    port = sys.argv[1] if len(sys.argv) > 1 else 8000
+    port = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_PORT
     print('start server, listening %s' % port)
     application.listen(port)
     tornado.ioloop.IOLoop.instance().start()

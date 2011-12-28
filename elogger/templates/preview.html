@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ static_url('css/main.css') }}">
 </head>
 <body>
+
 <header>
     <img src="{{ static_url('images/logo.png') }}" alt="eLogger">
 
@@ -23,7 +24,15 @@
 4. 基本抛弃eLogger之前的代码，开始开发2.0，并且换了张信用卡申请了个新的EC2
 5. eLogger2.0将所有的业务数据放到GAE，GAE提供所有数据访问的API。Redis只保存session。放弃Flask框架，WEB全部架构在
 tornado上，充分利用tornado的异步io来调用GAE上的API
-6. 在eLogger2.0的开发中，将完全按产品的态度来做：具体指自漂亮的界面，动化测试，持续部署，性能优化，清洁代码</pre>
+6. 在eLogger2.0的开发中，将完全按产品的态度来做：具体指用户体验，UI设计，自动化测试，自动化部署，性能优化，清洁代码</pre>
+        </div>
+    </section>
+    <section class="log">
+        <div class="log_date">2011-12-28</div>
+        <div class="log_content">
+            <pre>1. 未经许可抓取数据，并且保证抓取数据的可靠性和质量，这真是个苦B的差事
+2. 不造轮子了，在github找到个基于redis的tornado session实现
+3. 开始搞微博登陆，这回真的找不到太好的实现了，只能自己搞了</pre>
         </div>
     </section>
     <section class="log">

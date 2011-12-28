@@ -1,26 +1,24 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="utf-8" />
-		<title>eLogger</title>
-		<link rel="stylesheet" href="css/elogger.css">
-		<!--[if IE]>
-		<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<link rel="stylesheet" href="css/ie.css">
-		<![endif]-->
-	</head>	
+    <meta charset="utf-8"/>
+    <title>eLogger</title>
+    <link rel="stylesheet" href="{{ static_url('css/main.css') }}"/>
+</head>
 <body>
 
-			<div class="login">
-			<img src="image/login_sample.png">
-			<div class="logo">
-			<a href=""><img src="image/login_logo.png" style="border:0"></a>
-			</div>
-			<div class="btn">
-			<a href="elogger.html"><img src="image/icon_sinaweibo.png" style="border:0"></a>
-			<a href=""><img src="image/icon_andriod.png" style="border:0"></a>		
-			<a href=""><img src="image/login_iOS.png" style="border:0"></a>
-			</div>	</div>
+<div class="login">
+    <img src="{{ static_url('images/login_sample.png') }}"/>
+
+    <div class="logo">
+        <a href=""><img src="{{ static_url('images/login_logo.png') }}"/></a>
+    </div>
+    <div class="btn">
+        <a href="elogger.html"><img src="{{ static_url('images/icon_sinaweibo.png') }}"/></a>
+        <a href=""><img src="{{ static_url('images/icon_andriod.png') }}"></a>
+        <a href=""><img src="{{ static_url('images/login_iOS.png') }}"></a>
+    </div>
+</div>
 
 </body>
 </html>
