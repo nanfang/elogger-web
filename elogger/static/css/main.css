@@ -224,3 +224,10 @@ tools
     width: 200px;
     margin:10px;
 }
+
+.loading{
+    position:fixed;
+    bottom:50px;
+    right:20px;
+    font-size: 50px;
+}
