@@ -1,22 +1,16 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:ng="http://angularjs.org/">
 <head>
     <meta charset="utf-8"/>
     <meta property="wb:webmaster" content="89dbf0e94a0e8b72">
     <title>eLogger</title>
     <link rel="stylesheet" href="{{ static_url('css/main.css') }}"/>
     <script language="JavaScript" src="{{ static_url('js/lib/jquery-1.7.min.js') }}"></script>
-    <script language="Javascript" type="text/javascript">
-        $(function(){
-           $.get('/api/logs?year=2011&month=12').done(function(data){
-               $.each(data, function(key, value) {
-//                   alert(key + '=' + value);
-               });
-           }).fail(function(){
-               alert('shit');
-           });
-        });
-    </script>
+    <script language="JavaScript" src="{{ static_url('js/lib/jquery.glob.js') }}"></script>
+    <script language="JavaScript" src="{{ static_url('js/lib/jquery.date.js') }}"></script>
+    <script language="JavaScript" src="{{ static_url('js/lib/underscore.js') }}"></script>
+    <script language="JavaScript" src="{{ static_url('js/lib/angular-0.9.19.js') }}" ng:autobind></script>
+    <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
 </head>
 <body>
 
@@ -27,29 +21,16 @@
     <div id="month">Dec.</div>
     <div id="year">2011</div>
 </header>
-<div ng:controller="EloggerController">
-<article>
-
-    <section class="log">
-        <div class="log_date">2011-12-20</div>
+<article ng:controller="EloggerListController" ng:init="initialize()">
+    <section class="log" ng:repeat="log in logs">
+        <div class="log_date">{{!log.date}}</div>
         <div class="log_content">
-            <pre>1. 花了一晚上时间用scrapy写个爬虫，把eapoo上有声读物的下载链接全抓下来了
-2. scrapy和twisted都是好东西</pre>
-            <div class="log_manage"><a href="#">修改</a></div>
-        </div>
-    </section>
-
-    <section class="log">
-        <div class="log_date">2011-12-20</div>
-        <div class="log_content">
-            <pre>1. 花了一晚上时间用scrapy写个爬虫，把eapoo上有声读物的下载链接全抓下来了
-2. scrapy和twisted都是好东西</pre>
+                <pre>{{!log.content}}</pre>
             <div class="log_manage"><a href="#">修改</a></div>
         </div>
     </section>
 
 </article>
-</div>
 <footer>
     <p>
         Copyright
