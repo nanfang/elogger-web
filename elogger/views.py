@@ -139,7 +139,7 @@ class MainHandler(BaseHandler):
         self.render('main.html',
             **{'user': user})
 
-class DayLogApiHandler(BaseHandler):
+class DayLogHandler(BaseHandler):
     @asynchronous
     @authenticated
     @ajax_call
@@ -147,7 +147,8 @@ class DayLogApiHandler(BaseHandler):
         user = self.current_user
         year = self.get_argument("year", None)
         month = self.get_argument("month", None)
-        integration.get_month_logs(user['username'], year, month, callback=self._on_get_logs)
+        monthNum = self.get_argument("monthNum", 1)
+        integration.get_month_logs(user['username'], year, month, monthNum, callback=self._on_get_logs)
 
     def _on_get_logs(self, day_logs):
         self.set_status(200)
