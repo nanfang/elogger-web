@@ -63,7 +63,7 @@ EloggerListController.prototype = {
         this.fetch(dateToFetch.year(), dateToFetch.month(),1, waitingTime);
     },
     isFetchAutomatically:function(){
-        return this.monthsFetched <= this.MAX_AUTO_FETCH_NUM;
+        return this.monthsFetched < this.MAX_AUTO_FETCH_NUM;
     }
 
 };
