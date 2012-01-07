@@ -5,8 +5,14 @@ function EloggerListController($xhr) {
 
 EloggerListController.prototype = {
     initialize:function() {
+        var me = this;
         var date = $.date();
-        this.fetch(date.year(), date.month(), 2);
+        me.fetch(date.year(), date.month(), 2);
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > ($(document).height() - $(window).height()-3)) {
+                me.fetchNextMonth();
+            }
+        });
     },
     fetch:function(year, month, monthNum) {
         monthNum = monthNum || 1;
