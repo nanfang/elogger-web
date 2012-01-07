@@ -4,33 +4,40 @@ function EloggerListController($xhr) {
 }
 
 EloggerListController.prototype = {
-    initialize:function(){
-      var date=$.date();
-      this.fetch(date.year(),date.month());
+    initialize:function() {
+        var date = $.date();
+        this.fetch(date.year(), date.month());
     },
     fetch:function(year, month) {
         var me = this;
         var getMonthEmptyLogs = function() {
-            return [
-                {date:"2011-2-11",index:11},
-                {date:"2011-2-12",index:12},
-                {date:"2011-2-13",index:13},
-                {date:"2011-2-14",index:14},
-                {date:"2011-2-15",index:15},
-                {date:"2011-2-16",index:16},
-                {date:"2011-2-17",index:17}
-            ]
-        }
+            var today = $.date();
+            var result = [];
+            var currentDay = $.date().setYear(year).setMonth(month).setDay(1);
+            while (currentDay.month() === month && today.date().getTime() >= currentDay.date().getTime()) {
+                result.push({
+                    date:currentDay.format("yyyy-MM-dd"),
+                    index:currentDay.dateNum()
+                });
+                currentDay.adjust("D", 1);
+            }
+            return result.reverse();
+        };
         var appendToPage = function(data) {
             var monthLogs = getMonthEmptyLogs();
             _.each(monthLogs, function(log) {
-                log.content = data[""+log.index];
+                log.content = data["" + log.index];
                 me.logs.push(log);
             });
         };
         me.$xhr("GET", '/api/logs?year=' + year + '&month=' + month, function(code, data) {
             appendToPage(data);
+            me.lastFetchedDate = $.date().setYear(year).setMonth(month).setDay(1);
         });
+    },
+    fetchNextMonth:function() {
+        var dateToFetch = this.lastFetchedDate.adjust("D", -1);
+        this.fetch(dateToFetch.year(), dateToFetch.month());
     }
 }
 EloggerListController.$inject = ['$xhr'];
