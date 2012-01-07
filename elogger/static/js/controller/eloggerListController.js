@@ -9,10 +9,11 @@ EloggerListController.prototype = {
     initialize:function() {
         var me = this;
         var date = $.date();
-        me.isLoading = false;
         me.fetch(date.year(), date.month(), 2);
         $(window).scroll(function() {
-            if ($(window).scrollTop() > ($(document).height() - $(window).height() - 3) && me.isFetchAutomatically()) {
+            if ($(window).scrollTop() > ($(document).height() - $(window).height() - 3)
+                && me.isFetchAutomatically() && !me.isLoading) {
+                me.isLoading = true;
                 me.fetchNextMonth(1000);
             }
         });
