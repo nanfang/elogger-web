@@ -15,7 +15,14 @@
     <script language="JavaScript" src="{{ static_url('js/lib/fancybox-2.0.4/jquery.fancybox.pack.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
     <script>
-        $(document).ready(function() {
+        $(function() {
+
+            $(".edit_log_link").live('click',function(){
+                var $this = $(this);
+                $('#edit_log_title').html($this.closest('.log').find('.log_title').html());
+                $('#edit_log_content').html($this.closest('.log').find('.log_content pre').text());
+            });
+
             $(".edit_log_link").fancybox({
                 maxWidth	: 800,
                 maxHeight	: 600,
@@ -25,8 +32,10 @@
                 autoSize	: false,
                 closeClick	: false,
                 openEffect	: 'none',
-                closeEffect	: 'none'
+                closeEffect	: 'none',
+                title: "修改记录"
             });
+
         });
     </script>
 </head>
@@ -39,9 +48,9 @@
 </header>
 <article ng:controller="EloggerListController" ng:init="initialize()">
     <section class="log" ng:repeat="log in logs">
-        <div class="log_date">{{!log.date}}</div>
+        <div class="log_title">{{!log.date}}</div>
         <div class="log_content">
-                <pre>{{!log.content}}</pre>
+            <pre>{{!log.content}}</pre>
             <div class="log_manage"><a href="#edit_log" class="edit_log_link">修改</a></div>
         </div>
     </section>
@@ -54,10 +63,10 @@
         Copyright
     </p>
 </footer>
-<div id="edit_log">
-    <h2>2012-1-7</h2>
-    <textarea>
-test
+<div id="edit_log" style="display: none">
+    <h2 id="edit_log_title"></h2>
+    <textarea id="edit_log_content">
+
     </textarea>
 </div>
 </body>
