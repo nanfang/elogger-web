@@ -1,28 +1,33 @@
+from __future__ import unicode_literals, print_function, division
+import functools
 import json
 import logging
 import urllib
 import time
 import binascii
 import uuid
-import tornado
+from tornado import escape, httpclient
 from tornado.auth import  OAuthMixin, _oauth10a_signature, _oauth_signature
-from tornado import httpclient
-from tornado import escape
-from tornado.httputil import url_concat
-from tornado.util import bytes_type, b
-
-from tornado.web import RequestHandler, asynchronous, authenticated
+from tornado.web import RequestHandler, asynchronous, authenticated, HTTPError
 from pycket.session import SessionMixin
 
+from integration import integration
 
 logger = logging.getLogger(__name__)
+
+def ajax_call(view_func):
+    @functools.wraps(view_func)
+    def _wrapped_view(self, *args, **kwargs):
+        if self.request.headers.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+            raise HTTPError(400, 'this api support ajax only')
+        return view_func(self, *args, **kwargs)
+
+    return _wrapped_view
 
 
 class LoginHandler(RequestHandler):
     def get(self, *args, **kwargs):
         self.render("login.html")
-
-
 
 class WeiboMixin(OAuthMixin):
     _OAUTH_REQUEST_TOKEN_URL = "http://api.t.sina.com.cn/oauth/request_token"
@@ -97,14 +102,14 @@ class WeiboMixin(OAuthMixin):
             user["username"] = user["screen_name"]
         callback(user)
 
-class WeiboHandler(tornado.web.RequestHandler, WeiboMixin, SessionMixin):
+class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
     def initialize(self, api_key, api_secret, auth_callback, auth_success):
         self.api_key=api_key
         self.api_secret=api_secret
         self.auth_callback=auth_callback
         self.auth_success=auth_success
 
-    @tornado.web.asynchronous
+    @asynchronous
     def get(self, *args, **kwargs):
         if self.get_argument("oauth_token", None):
             self.get_authenticated_user(self.async_callback(self._on_auth))
@@ -113,9 +118,14 @@ class WeiboHandler(tornado.web.RequestHandler, WeiboMixin, SessionMixin):
 
     def _on_auth(self, response):
         if not response:
-            raise tornado.web.HTTPError(500, "Weibo auth failed")
+            raise HTTPError(500, "Weibo auth failed")
         user_info = json.loads(response.body)
-        self.session.set('user', user_info)
+
+        user={
+            'username':'weibo/%s' %user_info['domain'],
+            'nickname':user_info['name'],
+        }
+        self.session.set('user', user)
         self.redirect(self.auth_success, permanent=True)
 
 class BaseHandler(RequestHandler, SessionMixin):
@@ -125,6 +135,32 @@ class BaseHandler(RequestHandler, SessionMixin):
 class MainHandler(BaseHandler):
     @authenticated
     def get(self, *args, **kwargs):
-        self.render("main.html", **{'user_info':self.session.get('user')})
+        user = self.current_user
+        self.render('main.html',
+            **{'user': user})
+
+class DayLogApiHandler(BaseHandler):
+    @asynchronous
+    @authenticated
+    @ajax_call
+    def get(self, *args, **kwargs):
+        user = self.current_user
+        year = self.get_argument("year", None)
+        month = self.get_argument("month", None)
+        print('%s-%s' % (year, month))
+        integration.get_month_logs(user['username'], year, month, callback=self._on_get_logs)
+
+
+    def _on_get_logs(self, day_logs):
+        self.set_status(200)
+        self.set_header("Content-Type", "application/json; charset=UTF-8")
+        self.write(json.dumps(day_logs))
+        self.finish()
+
+class PreviewHandler(BaseHandler):
+
+    def get(self, *args, **kwargs):
+        self.render('preview.html')
+
 
 

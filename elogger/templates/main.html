@@ -11,84 +11,12 @@
 <header>
     <img src="{{ static_url('images/logo.png') }}" alt="eLogger">
 
-    <div id="user">{{ user_info['name'] }}</div>
+    <div id="user">{{ user['nickname'] }}</div>
     <div id="month">Dec.</div>
     <div id="year">2011</div>
 </header>
 <article>
-    <section class="retro">
-        <div class="log_date">12月的总结</div>
-        <div class="log_content">
-            <pre>1. 本月开始搞数据数据抓取和分析的勾当，远不如做旅游网站好玩，但是总算有点时间折腾eLogger了
-2. 读完了《Pro Git》《少有人走的路》《Ubuntu Admin》《Head First HTML/CSS》《持续交付》，其中《持续交付》最有帮助
-3. 学习了Scrapy和Twisted两个框架，twisted还没太搞明白
-4. 基本抛弃eLogger之前的代码，开始开发2.0，并且换了张信用卡申请了个新的EC2
-5. eLogger2.0将所有的业务数据放到GAE，GAE提供所有数据访问的API。Redis只保存session。放弃Flask框架，WEB全部架构在
-tornado上，充分利用tornado的异步io来调用GAE上的API
-6. 在eLogger2.0的开发中，将完全按产品的态度来做：具体指用户体验，UI设计，自动化测试，自动化部署，性能优化，清洁代码</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-28</div>
-        <div class="log_content">
-            <pre>1. 未经许可抓取数据，并且保证抓取数据的可靠性和质量，这真是个苦B的差事
-2. 不造轮子了，在github找到个基于redis的tornado session实现
-3. 开始搞微博登陆，这回真的找不到太好的实现了，只能自己搞了</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-27</div>
-        <div class="log_content">
-            <pre>1. 一天都在给混沌的代码加logging并且重构的好看点，有了logging的反馈，形势立刻明朗了
-2. 搞到一本原版《Eric Mayer on CSS》，要给eLogger好好修修样式了</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-26</div>
-        <div class="log_content">
-            <pre>1. 混沌的周一，混沌的数据
-2. 没想到晚上在elogger上还是搞数据，v1.0的EC2就要过期了，写个脚本把数据导出来，脚本的名字就叫saygoodbye.py</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-25</div>
-        <div class="log_content">
-            <pre>1. 用Fabric苦逼的搞了一天自动化部署
-2. 总算把这个预览版搞上线了，现在使用持续部署来写工作日志
-3. 希望通过持续交付，渐进的使这个网站活起来
-4. 明天又要上班了，周末的时间真宝贵，elogger开发严重delay了</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-24</div>
-        <div class="log_content">
-            <pre>1. 基本一天都在调CSS, 把@猪的笨笨Luna 做的页面整合到工程里
-2. 申请了一个新的EC2账户，在东京起了个micro instance，速度还8错
-3. 尝试了一晚上用puppet来做自动化部署，没搞定，明天还是先用fabric做半自动化吧</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-23</div>
-        <div class="log_content">
-            <pre>1. 下班后泡了2小时weibo没干活，真该死
-2. 同一时间，@猪的笨笨Luna把页面做出来，还是HTML5风格的，她可7年没做过页面了，</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-22</div>
-        <div class="log_content">
-            <pre>1. 白天上班继续抓取数据
-2. 好好读了下tornado的文档，作为web框架能满足我99%的需求，而且可比django/flask简单多了
-3. 挥泪干掉了flask/jinja，我们要做纯tornado应用了，谁让我们需要异步调用API呢</pre>
-        </div>
-    </section>
-    <section class="log">
-        <div class="log_date">2011-12-21</div>
-        <div class="log_content">
-            <pre>1. 白天上班搞数据抓取的勾当
-2. 在公司批量下载昨天爬的资源，好爽</pre>
-        </div>
-    </section>
+
     <section class="log">
         <div class="log_date">2011-12-20</div>
         <div class="log_content">
