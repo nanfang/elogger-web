@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def ajax_call(view_func):
     @functools.wraps(view_func)
     def _wrapped_view(self, *args, **kwargs):
-        if self.request.headers.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+        if self.request.headers.get('X-Requested-With') != 'XMLHttpRequest':
             raise HTTPError(400, 'this api support ajax only')
         return view_func(self, *args, **kwargs)
 
