@@ -147,7 +147,6 @@ class DayLogHandler(BaseHandler):
         user = self.current_user
         year = self.get_argument("year", None)
         month = self.get_argument("month", None)
-        monthNum = self.get_argument("monthNum", 1)
         integration.get_month_logs(user['username'], year, month, callback=self._on_get_logs)
 
     def _on_get_logs(self, day_logs):
