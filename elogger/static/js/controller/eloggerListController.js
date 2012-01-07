@@ -1,6 +1,8 @@
 function EloggerListController($xhr) {
+    this.MAX_AUTO_FETCH_NUM = 12;
     this.$xhr = $xhr;
     this.logs = [];
+    this.monthsFetched = 0;
 }
 
 EloggerListController.prototype = {
@@ -10,8 +12,8 @@ EloggerListController.prototype = {
         me.isLoading = false;
         me.fetch(date.year(), date.month(), 2);
         $(window).scroll(function() {
-            if ($(window).scrollTop() > ($(document).height() - $(window).height() - 3)) {
-                me.fetchNextMonth();
+            if ($(window).scrollTop() > ($(document).height() - $(window).height() - 3) && me.isFetchAutomatically()) {
+                me.fetchNextMonth(1000);
             }
         });
     },
@@ -49,15 +51,21 @@ EloggerListController.prototype = {
             me.lastFetchedDate = $.date().setYear(year).setMonth(month).setDay(1).adjust("M", -monthNum + 1);
             setTimeout(function() {
                 appendToPage(data);
+                me.monthsFetched += monthNum;
                 me.isLoading = false;
                 me.$eval();
             }, waitTime);
         });
     },
-    fetchNextMonth:function() {
+    fetchNextMonth:function(waitingTime) {
+        waitingTime = waitingTime || 0;
         var dateToFetch = this.lastFetchedDate.adjust("D", -1);
-        this.fetch(dateToFetch.year(), dateToFetch.month(),1, 1000);
+        this.fetch(dateToFetch.year(), dateToFetch.month(),1, waitingTime);
+    },
+    isFetchAutomatically:function(){
+        return this.monthsFetched <= this.MAX_AUTO_FETCH_NUM;
     }
+
 };
 
 EloggerListController.$inject = ['$xhr'];
