@@ -57,8 +57,8 @@ $.date = function ( datestring, formatstring ) {
 		monthname: function() {
 			return calendar.months.names[ date.getMonth() ];
 		},
-        month:function(){
-            return date.getMonth();
+        month:function() {
+            return date.getMonth() + 1;
         },
         dateNum:function(){
             return date.getDate();

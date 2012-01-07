@@ -10,7 +10,21 @@
     <script language="JavaScript" src="{{ static_url('js/lib/jquery.date.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/lib/underscore.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/lib/angular-0.9.19.js') }}" ng:autobind></script>
+    <script language="JavaScript" src="{{ static_url('js/lib/jquery.mousewheel-3.0.6.pack.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
+
+    <script language="Javascript" type="text/javascript">
+        $(function(){
+           $.get('/api/logs?year=2011&month=12').done(function(data){
+               $.each(data, function(key, value) {
+//                   alert(key + '=' + value);
+               });
+           }).fail(function(){
+               alert('shit');
+           });
+        });
+    </script>
+>>>>>>> introduce mousewheel
 </head>
 <body>
 

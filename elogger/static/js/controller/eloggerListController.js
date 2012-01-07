@@ -39,5 +39,6 @@ EloggerListController.prototype = {
         var dateToFetch = this.lastFetchedDate.adjust("D", -1);
         this.fetch(dateToFetch.year(), dateToFetch.month());
     }
-}
+};
+
 EloggerListController.$inject = ['$xhr'];
