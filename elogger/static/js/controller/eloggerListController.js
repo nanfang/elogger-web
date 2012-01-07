@@ -14,7 +14,7 @@ EloggerListController.prototype = {
         var getMonthEmptyLogs = function() {
             var today = $.date();
             var result = [];
-            var currentDay = $.date().setYear(year).setMonth(month).setDay(1).adjust("M",-monthNum+1);
+            var currentDay = $.date().setYear(year).setMonth(month).setDay(1).adjust("M", -monthNum + 1);
             var currentMonth = currentDay.month();
             for (var i = 0; i < monthNum; i++) {
                 while (currentDay.month() === currentMonth && today.date().getTime() >= currentDay.date().getTime()) {
@@ -24,7 +24,7 @@ EloggerListController.prototype = {
                     });
                     currentDay.adjust("D", 1);
                 }
-                currentMonth =  currentDay.month();
+                currentMonth = currentDay.month();
             }
             return result.reverse();
         };
@@ -36,8 +36,8 @@ EloggerListController.prototype = {
             });
         };
         me.$xhr("GET", '/api/logs?year=' + year + '&month=' + month + '&monthNum=' + monthNum, function(code, data) {
+            me.lastFetchedDate = $.date().setYear(year).setMonth(month).setDay(1).adjust("M", -monthNum + 1);
             appendToPage(data);
-            me.lastFetchedDate = $.date().setYear(year).setMonth(month).setDay(1);
         });
     },
     fetchNextMonth:function() {
