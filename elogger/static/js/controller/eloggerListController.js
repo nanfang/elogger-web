@@ -6,20 +6,25 @@ function EloggerListController($xhr) {
 EloggerListController.prototype = {
     initialize:function() {
         var date = $.date();
-        this.fetch(date.year(), date.month());
+        this.fetch(date.year(), date.month(), 2);
     },
-    fetch:function(year, month) {
+    fetch:function(year, month, monthNum) {
+        monthNum = monthNum || 1;
         var me = this;
         var getMonthEmptyLogs = function() {
             var today = $.date();
             var result = [];
-            var currentDay = $.date().setYear(year).setMonth(month).setDay(1);
-            while (currentDay.month() === month && today.date().getTime() >= currentDay.date().getTime()) {
-                result.push({
-                    date:currentDay.format("yyyy-MM-dd"),
-                    index:currentDay.dateNum()
-                });
-                currentDay.adjust("D", 1);
+            var currentDay = $.date().setYear(year).setMonth(month).setDay(1).adjust("M",-monthNum+1);
+            var currentMonth = currentDay.month();
+            for (var i = 0; i < monthNum; i++) {
+                while (currentDay.month() === currentMonth && today.date().getTime() >= currentDay.date().getTime()) {
+                    result.push({
+                        date:currentDay.format("yyyy-MM-dd"),
+                        index:currentDay.dateNum()
+                    });
+                    currentDay.adjust("D", 1);
+                }
+                currentMonth =  currentDay.month();
             }
             return result.reverse();
         };
@@ -30,7 +35,7 @@ EloggerListController.prototype = {
                 me.logs.push(log);
             });
         };
-        me.$xhr("GET", '/api/logs?year=' + year + '&month=' + month, function(code, data) {
+        me.$xhr("GET", '/api/logs?year=' + year + '&month=' + month + '&monthNum=' + monthNum, function(code, data) {
             appendToPage(data);
             me.lastFetchedDate = $.date().setYear(year).setMonth(month).setDay(1);
         });
