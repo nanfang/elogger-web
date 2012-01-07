@@ -147,6 +147,10 @@ a:hover {
     padding-top: 10px;
 }
 
+.log:hover .log_manage {
+    display: block;
+}
+
 .log_date {
     float: left;
     text-align: center;
@@ -163,10 +167,6 @@ a:hover {
     font-size: 12px;
     border-bottom: 1px #af8053 solid;
     padding-bottom: 20px;
-}
-
-.log_content:hover .log_manage {
-    display: block;
 }
 
 .log_manage {

@@ -10,10 +10,13 @@ class Integration:
 
 class DummyIntegration(Integration):
     def get_month_logs(self, username, year, month, callback):
-        callback({
-            '2011-10-11':'test, 测试'
+        callback(
+        {
+            '11':'test, 测试',
+            '12':'test, 测试',
+            '13':'test, 测试',
+            '14':'test, 测试',
         })
-
 
 class ApiIntegration(Integration):
     http_client = AsyncHTTPClient()
