@@ -34,3 +34,4 @@ cover
 secret.py
 prod.py
 .DS_Store
+.DS_Store/

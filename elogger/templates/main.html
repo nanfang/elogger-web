@@ -10,7 +10,7 @@
         $(function(){
            $.get('/api/logs?year=2011&month=12').done(function(data){
                $.each(data, function(key, value) {
-                   alert(key + '=' + value);
+//                   alert(key + '=' + value);
                });
            }).fail(function(){
                alert('shit');
@@ -34,6 +34,7 @@
         <div class="log_content">
             <pre>1. 花了一晚上时间用scrapy写个爬虫，把eapoo上有声读物的下载链接全抓下来了
 2. scrapy和twisted都是好东西</pre>
+            <div class="log_manage"><a href="#">修改</a></div>
         </div>
     </section>
 

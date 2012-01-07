@@ -156,13 +156,24 @@ a:hover {
 }
 
 .log_content {
+    position: relative;
     text-indent: 0;
     margin-left: 130px;
     margin-right: 38px;
     font-size: 12px;
     border-bottom: 1px #af8053 solid;
-    padding-bottom: 16px;
+    padding-bottom: 20px;
+}
 
+.log_content:hover .log_manage {
+    display: block;
+}
+
+.log_manage {
+    position: absolute;
+    left:0;
+    bottom:3px;
+    display: none;
 }
 
 .log_content p {
