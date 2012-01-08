@@ -37,7 +37,7 @@ application = tornado.web.Application([
     (r'/', MainHandler),
     (r'/preview', PreviewHandler),
     (r'/login', LoginHandler),
-    (r'/api/logs', DayLogHandler),
+    (r'/logs', DayLogHandler),
     (r'/auth/weibo', WeiboHandler, {'api_key': WEIBO_API_KEY,
                                     'api_secret': WEIBO_API_SECRET,
                                     'auth_callback': '/auth/weibo',

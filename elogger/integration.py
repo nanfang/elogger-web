@@ -4,19 +4,38 @@ import json
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 
 class Integration:
-    def get_month_logs(self, username,year, month, callback):
+    def get_month_logs(self, username, year, month, callback):
         return callback({})
+
+    def put_day_log(self, username, year, month, day, content, callback):
+        return callback(True)
 
 
 class DummyIntegration(Integration):
+    dummy_data = {
+        2011: {12: {
+            '11': 'test, 测试',
+            '12': 'test, 测试',
+            '13': 'test, 测试',
+            '14': 'test, 测试',
+            }
+        }
+    }
+
     def get_month_logs(self, username, year, month, callback):
         callback(
-        {
-            '11':'test, 测试',
-            '12':'test, 测试',
-            '13':'test, 测试',
-            '14':'test, 测试',
-        })
+            self.dummy_data.get(year, {}).get(month,{})
+        )
+
+    def put_day_log(self, username, year, month, day, content, callback):
+        if year not in self.dummy_data:
+            self.dummy_data[year]={}
+        if month not in self.dummy_data[year]:
+            self.dummy_data[year][month]={}
+
+        self.dummy_data[year][month][day]=content
+        return callback(True)
+
 
 class ApiIntegration(Integration):
     http_client = AsyncHTTPClient()
@@ -32,7 +51,7 @@ class ApiIntegration(Integration):
                 auth_username=username,
                 auth_password=self.master_key,
             ),
-            callback=lambda response:callback(json.loads(response.body))
+            callback=lambda response: callback(json.loads(response.body))
         )
 
 

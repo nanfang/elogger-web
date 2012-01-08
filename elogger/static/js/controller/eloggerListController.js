@@ -48,7 +48,7 @@ EloggerListController.prototype = {
         };
         me.isLoading = true;
         me.$eval();
-        me.$xhr("GET", '/api/logs?year=' + year + '&month=' + month + '&monthNum=' + monthNum, function(code, data) {
+        me.$xhr("GET", '/logs?year=' + year + '&month=' + month + '&monthNum=' + monthNum, function(code, data) {
             me.lastFetchedDate = $.date().setYear(year).setMonth(month).setDay(1).adjust("M", -monthNum + 1);
             setTimeout(function() {
                 appendToPage(data);

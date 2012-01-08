@@ -146,8 +146,37 @@ class DayLogHandler(BaseHandler):
     def get(self, *args, **kwargs):
         user = self.current_user
         year = self.get_argument("year", None)
-        month = self.get_argument("month", None)
-        integration.get_month_logs(user['username'], year, month, callback=self._on_get_logs)
+        month = self.get_argument("month", None) # 1 based
+        # TODO check args
+
+        integration.get_month_logs(
+            username=user['username'],
+            year=int(year),
+            month=int(month),
+            callback=self._on_get_logs)
+
+    @asynchronous
+    @authenticated
+    @ajax_call
+    def post(self, *args, **kwargs):
+        user = self.current_user
+        year = self.get_argument("year", None)
+        month = self.get_argument("month", None) # 1 based
+        day = self.get_argument("month", None) # 1 based
+        content = self.get_argument("content", None)
+        # TODO check args
+
+        integration.put_day_log(
+            username=user['username'],
+            year=int(year),
+            month=int(month),
+            day=int(day),
+            content=content,
+            callback=self._on_put_log)
+
+    def _on_put_log(self, success):
+        self.set_status(200)
+        self.finish()
 
     def _on_get_logs(self, day_logs):
         self.set_status(200)
