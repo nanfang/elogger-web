@@ -66,6 +66,13 @@ EloggerListController.prototype = {
             cur.adjust("D", 1);
         }
         return result.reverse();
+    },
+    saveLog:function (log){
+        var me=this;
+        //log format is {
+        me.$xhr("PUT", '/logs', log, function (code, data) {
+
+        });
     }
 };
 
