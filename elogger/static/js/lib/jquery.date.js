@@ -34,14 +34,6 @@ $.date = function ( datestring, formatstring ) {
 			date = new Date( date.getFullYear(), date.getMonth(), day );
 			return this;
 		},
-        setYear: function( year ) {
-			date = new Date( year, date.getMonth(), date.getDay() );
-			return this;
-		},
-        setMonth: function( month ) {
-			date = new Date( date.getFullYear(), month, date.getDay());
-			return this;
-		},
 		adjust: function( period, offset ) {
 			var day = period == "D" ? date.getDate() + offset : date.getDate(),
 				month = period == "M" ? date.getMonth() + offset : date.getMonth(),
@@ -57,11 +49,8 @@ $.date = function ( datestring, formatstring ) {
 		monthname: function() {
 			return calendar.months.names[ date.getMonth() ];
 		},
-        month:function() {
-            return date.getMonth();
-        },
-        dateNum:function(){
-            return date.getDate();
+        month:function(){
+            return date.getMonth()+1;
         },
 		year: function() {
 			return date.getFullYear();

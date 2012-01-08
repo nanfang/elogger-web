@@ -19,6 +19,13 @@ class DummyIntegration(Integration):
             '13': 'test, 测试',
             '14': 'test, 测试',
             }
+        },
+        2012: {1: {
+            '1': 'test, 测试',
+            '2': 'test, 测试',
+            '5': 'test, 测试',
+            '6': 'test, 测试',
+            }
         }
     }
 
