@@ -16,7 +16,7 @@
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
     <script>
         $(function() {
-            $(".edit_log_link").live('click', function() {
+            $(".edit_log_link").live('click',function(){
                 var $this = $(this);
                 $('#edit_log_title').val($this.closest('.log').find('.log_title span').text());
                 $('#edit_log_content').val($this.closest('.log').find('.log_content pre').text());
@@ -47,7 +47,6 @@
 <body>
 <header>
     <img src="{{ static_url('images/logo.png') }}" alt="eLogger"/>
-
     <div id="user">{{ user['nickname'] }}</div>
     <div id="month">Dec.</div>
     <div id="year">2011</div>
@@ -57,18 +56,18 @@
         <div class="log_title">{{!log.date}}</div>
         <div class="log_content">
             <pre>{{!log.content}}</pre>
-            <div class="log_manage"><a href="javascript:void(0)" ng:click="editLog(log)" class="edit_log_link">修改</a></div>
-        </div>
-        <div id="edit_log" style="display: none">
-            <input name = "log.date" type="hidden"/>
-            <textarea name = "log.content">
-            </textarea>
+            <div class="log_manage"><a href="#edit_log" class="edit_log_link">修改</a></div>
         </div>
     </section>
+<<<<<<< HEAD
 
     <button ng:hide="autoLoad()" ng:click="fetchNextMonth()"/>
     More</button>
     <span class="loading" ng:show="isLoading">Loading...</span>
+=======
+    <section class="loading" ng:show="isLoading">Loading...</section>
+    <button ng:hide="autoLoad()" ng:click="fetchNextMonth()" />More</button>
+>>>>>>> fancy box
 </article>
 
 <footer>
@@ -76,6 +75,10 @@
         Copyright
     </p>
 </footer>
-
+<div id="edit_log" style="display: none">
+    <input id="edit_log_title" type="hidden"/>
+    <textarea id="edit_log_content">
+    </textarea>
+</div>
 </body>
 </html>
