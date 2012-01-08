@@ -13,40 +13,14 @@
     <script language="JavaScript" src="{{ static_url('js/lib/underscore.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/lib/angular-0.9.19.js') }}" ng:autobind></script>
     <script language="JavaScript" src="{{ static_url('js/lib/fancybox-2.0.4/jquery.fancybox.pack.js') }}"></script>
+    <script language="JavaScript" src="{{ static_url('js/directive/fancybox.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
-    <script>
-        $(function() {
-            $(".edit_log_link").live('click',function(){
-                var $this = $(this);
-                $('#edit_log_title').val($this.closest('.log').find('.log_title span').text());
-                $('#edit_log_content').val($this.closest('.log').find('.log_content pre').text());
-            });
 
-            $(".edit_log_link").fancybox({
-                title: "修改记录",
-                maxWidth	: 800,
-                maxHeight	: 600,
-                fitToView	: false,
-                width		: '70%',
-                height		: '70%',
-                autoSize	: false,
-                closeClick	: false,
-                openEffect	: 'none',
-                closeEffect	: 'none',
-                beforeLoad: function(){
-                    this.title=$('#edit_log_title').val();
-                },
-                afterClose: function(){
-                    alert('{0}:{1}'.format($('#edit_log_title').val(), $('#edit_log_content').val()));
-                }
-            });
-
-        });
-    </script>
 </head>
 <body>
 <header>
     <img src="{{ static_url('images/logo.png') }}" alt="eLogger"/>
+
     <div id="user">{{ user['nickname'] }}</div>
     <div id="month">Dec.</div>
     <div id="year">2011</div>
@@ -56,12 +30,19 @@
         <div class="log_title">{{!log.date}}</div>
         <div class="log_content">
             <pre>{{!log.content}}</pre>
-            <div class="log_manage"><a href="#edit_log" class="edit_log_link">修改</a></div>
+            <div class="log_manage"><a href="#edit_log_{{!$index}}" my:fancybox class="edit_log_link">修改</a>
+            </div>
+            <div id="edit_log_{{!$index}}" style="display: none">
+                <input name="log.date"/>
+                <textarea name="log.content">
+                </textarea>
+            </div>
         </div>
     </section>
 
     <section class="loading" ng:show="isLoading">Loading...</section>
-    <button ng:hide="autoLoad()" ng:click="fetchNextMonth()" />More</button>
+    <button ng:hide="autoLoad()" ng:click="fetchNextMonth()"/>
+    More</button>
 </article>
 
 <footer>
@@ -69,10 +50,5 @@
         Copyright
     </p>
 </footer>
-<div id="edit_log" style="display: none">
-    <input id="edit_log_title" type="hidden"/>
-    <textarea id="edit_log_content">
-    </textarea>
-</div>
 </body>
 </html>

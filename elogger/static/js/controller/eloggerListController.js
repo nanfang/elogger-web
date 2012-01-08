@@ -40,12 +40,12 @@ EloggerListController.prototype = {
             me.monthsFetched += 1;
             me.isLoading = false;
             me.$eval();
-            if(callback){
+            if (callback) {
                 callback();
             }
         });
     },
-    loadNextMonth:function(){
+    loadNextMonth:function() {
         var loadStart = this.lastLoadedDate.adjust("D", -1);
         this.load(loadStart.year(), loadStart.month());
     },
@@ -67,15 +67,18 @@ EloggerListController.prototype = {
         }
         return result.reverse();
     },
-    saveLog:function (log){
-        var me=this;
+    saveLog:function (log) {
+        var me = this;
+        console.log("log saved:", log);
         //log format is {
-        me.$xhr("PUT", '/logs', log, function (code, data) {
-
-        });
+//        me.$xhr("PUT", '/logs', log, function (code, data) {
+//
+//        });
     },
-    editLog: function(log){
-        console.log(log)
+    editLog: function(log, index) {
+        console.log(index, log)
+        $('#edit_log_title').val(log.date);
+        $('#edit_log_content').val(log.content);
 //         var $this = $(this);
 //                $('#edit_log_title').val($this.closest('.log').find('.log_title span').text());
 //                $('#edit_log_content').html($this.closest('.log').find('.log_content pre').text());
