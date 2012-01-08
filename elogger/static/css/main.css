@@ -231,3 +231,14 @@ tools
     right:20px;
     font-size: 50px;
 }
+
+#edit_log{
+    height: 100%;
+}
+
+#edit_log_content{
+    margin: auto;
+    width: 98%;
+    height: 98%;
+    display: block;
+}

@@ -16,14 +16,14 @@
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
     <script>
         $(function() {
-
             $(".edit_log_link").live('click',function(){
                 var $this = $(this);
-                $('#edit_log_title').html($this.closest('.log').find('.log_title').html());
+                $('#edit_log_title').val($this.closest('.log').find('.log_title span').text());
                 $('#edit_log_content').html($this.closest('.log').find('.log_content pre').text());
             });
 
             $(".edit_log_link").fancybox({
+                title: "修改记录",
                 maxWidth	: 800,
                 maxHeight	: 600,
                 fitToView	: false,
@@ -33,7 +33,9 @@
                 closeClick	: false,
                 openEffect	: 'none',
                 closeEffect	: 'none',
-                title: "修改记录"
+                beforeLoad: function(){
+                    this.title=$('#edit_log_title').val();
+                }
             });
 
         });
@@ -64,9 +66,8 @@
     </p>
 </footer>
 <div id="edit_log" style="display: none">
-    <h2 id="edit_log_title"></h2>
+    <input id="edit_log_title" type="hidden"/>
     <textarea id="edit_log_content">
-
     </textarea>
 </div>
 </body>
