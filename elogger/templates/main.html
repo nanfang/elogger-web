@@ -25,8 +25,9 @@
     <div id="month">Dec.</div>
     <div id="year">2011</div>
 </header>
+
 <article ng:controller="EloggerListController" ng:init="initialize()">
-    <section class="log" ng:repeat="log in logs">
+    <section class="log {{!log.inEditing}}" ng:repeat="log in logs">
         <div class="log_title">{{!log.date}}</div>
         <div class="log_content">
             <pre>{{!log.content}}</pre>
