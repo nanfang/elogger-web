@@ -73,6 +73,12 @@ EloggerListController.prototype = {
         me.$xhr("PUT", '/logs', log, function (code, data) {
 
         });
+    },
+    editLog: function(log){
+        console.log(log)
+//         var $this = $(this);
+//                $('#edit_log_title').val($this.closest('.log').find('.log_title span').text());
+//                $('#edit_log_content').html($this.closest('.log').find('.log_content pre').text());
     }
 };
 
