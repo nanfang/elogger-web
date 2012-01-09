@@ -33,8 +33,8 @@
             <pre>{{!log.content}}</pre>
             <div class="log_manage"><a href="#edit_log_{{!$index}}" my:fancybox class="edit_log_link">修改</a>
             </div>
-            <div id="edit_log_{{!$index}}" style="display: none">
-                <input name="log.date"/>
+            <div id="edit_log_{{!$index}}" class="edit_log">
+                <input name="log.date" type="hidden"/>
                 <textarea name="log.content">
                 </textarea>
             </div>
@@ -42,8 +42,7 @@
     </section>
 
     <section class="loading" ng:show="isLoading">Loading...</section>
-    <button ng:hide="autoLoad()" ng:click="fetchNextMonth()"/>
-    More</button>
+    <button ng:hide="autoLoad()" ng:click="fetchNextMonth()"/>More</button>
 </article>
 
 <footer>

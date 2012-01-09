@@ -74,7 +74,7 @@ class WeiboMixin(OAuthMixin):
 
     def _oauth_get_user(self, access_token, callback):
         http = httpclient.AsyncHTTPClient()
-        http.fetch(self._oauth_verify_url(access_token), self._on_auth)
+        http.fetch(self._oauth_verify_url(access_token), self.async_callback(self._on_auth, access_token))
 
     def _oauth_verify_url(self, access_token):
         consumer_token = self._oauth_consumer_token()
@@ -116,17 +116,22 @@ class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
             return
         self.authenticate_redirect()
 
-    def _on_auth(self, response):
+    def _on_auth(self, access_token, response):
         if not response:
             raise HTTPError(500, "Weibo auth failed")
         user_info = json.loads(response.body)
 
-        user={
+        user = {
             'username':'weibo/%s' %user_info['domain'],
             'nickname':user_info['name'],
+            'access_token':access_token
         }
-        self.session.set('user', user)
-        self.redirect(self.auth_success, permanent=True)
+
+        def on_register():
+            self.session.set('user', user)
+            self.redirect(self.auth_success, permanent=True)
+
+        integration.register_user(user, on_register)
 
 class BaseHandler(RequestHandler, SessionMixin):
     def get_current_user(self):
