@@ -8,7 +8,7 @@ String.prototype.format = function () {
 };
 
 function EloggerListController($xhr) {
-    this.MAX_AUTO_FETCH_NUM = 12;
+    this.MAX_AUTO_FETCH_NUM = 36;
     this.$xhr = $xhr;
     this.logs = [];
     this.monthsFetched = 0;
@@ -60,8 +60,13 @@ EloggerListController.prototype = {
         var result = [];
         while (cur.month() === month && cur.year() === year && today.date().getTime() >= cur.date().getTime()) {
             result.push({
-                date:cur.format(),
-                index:cur.date().getDate()
+                title:cur.format(),
+                index:cur.date().getDate(),
+                status:'saved',
+                day:cur.date().getDate(),
+                month:cur.month(),
+                year:cur.year()
+
             });
             cur.adjust("D", 1);
         }
@@ -70,11 +75,17 @@ EloggerListController.prototype = {
     saveLog:function (log) {
         var me = this;
         console.log("log saved:", log);
-        //log format is {
-//        me.$xhr("PUT", '/logs', log, function (code, data) {
-//
-//        });
+        log.status='saving';
+        me.$xhr("POST", '/logs', {
+            day:log.day,
+            month:log.month,
+            year:log.year,
+            content:log.content
+        }, function (code, data) {
+            log.status='saved';
+        });
     }
+
 };
 
 EloggerListController.$inject = ['$xhr'];

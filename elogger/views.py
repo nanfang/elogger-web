@@ -165,18 +165,13 @@ class DayLogHandler(BaseHandler):
     @ajax_call
     def post(self, *args, **kwargs):
         user = self.current_user
-        year = self.get_argument("year", None)
-        month = self.get_argument("month", None) # 1 based
-        day = self.get_argument("month", None) # 1 based
-        content = self.get_argument("content", None)
-        # TODO check args
-
+        daylog = json.loads(self.request.body)
         integration.put_day_log(
             username=user['username'],
-            year=int(year),
-            month=int(month),
-            day=int(day),
-            content=content,
+            year=daylog['year'],
+            month=daylog['month'],
+            day=daylog['day'],
+            content=daylog['content'],
             callback=self._on_put_log)
 
     def _on_put_log(self, success):

@@ -253,3 +253,7 @@ tools
     display: block;
     outline: none;
 }
+
+.log_content .saving {
+    font-style: italic;
+}
