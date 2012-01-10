@@ -28,8 +28,9 @@
 <article ng:controller="EloggerListController" ng:init="initialize()">
     <section class="log" ng:repeat="log in logs">
         <div class="log_title">{{!log.title}}</div>
+        <div class="{{!log.status}}">saving</div>
         <div class="log_content">
-            <pre class="{{!log.status}}">{{!log.content}}</pre>
+            <pre>{{!log.content}}</pre>
             <div class="log_manage"><a href="#edit_log_{{!$index}}" my:fancybox class="edit_log_link">修改</a>
             </div>
             <div id="edit_log_{{!$index}}" class="edit_log">
