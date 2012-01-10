@@ -1,1 +1,1 @@
-fab -f etc/fabfile.py stop_all copy_files install start_all status
+fab -i ~/.ssh/elogger.pem stop copy start status

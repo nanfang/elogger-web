@@ -13,7 +13,7 @@ PACKAGE_DIR = DEPLOY_DIR / 'current'
 PACKAGE_BACKUP_DIR = DEPLOY_DIR / 'last'
 PYTHON_ENV_DIR = DEPLOY_DIR / 'python-env'
 
-env.hosts = ['ec2-176-34-17-159.ap-northeast-1.compute.amazonaws.com']
+env.hosts = ['ec2-176-34-18-3.ap-northeast-1.compute.amazonaws.com']
 env.user = 'elogger'
 
 @task
@@ -60,17 +60,19 @@ def copy():
                   delete=True,
                   extra_opts='--force --chmod=g+w -O --delete-excluded')
 
+@task
 def stop():
     with cd(DEPLOY_DIR):
         run('. %s/bin/activate && supervisorctl stop all' % PYTHON_ENV_DIR)
 
+@task
 def start():
     virtualenv()
     with cd(DEPLOY_DIR):
         with prefix('. %s/bin/activate' % VIRTUALENV_DIR):
             run('supervisorctl stop all')
             run('supervisorctl reload')
-
+@task
 def status():
     with cd(DEPLOY_DIR):
         run('. %s/bin/activate && supervisorctl status' % PYTHON_ENV_DIR)

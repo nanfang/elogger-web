@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, print_function, division
 import json
+import logging
 import uuid
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from elogger import settings
 
+logger=logging.getLogger(__name__)
 class Integration:
     def get_month_logs(self, username, year, month, callback):
         return callback({})
@@ -18,17 +20,17 @@ class Integration:
 class DummyIntegration(Integration):
     dummy_data = {
         2011: {12: {
-            '11': 'test, 测试',
-            '12': 'test, 测试',
-            '13': 'test, 测试',
-            '14': 'test, 测试',
+            '11': 'test',
+            '12': 'test',
+            '13': 'test',
+            '14': 'test',
             }
         },
         2012: {1: {
-            '1': 'test, 测试',
-            '2': 'test, 测试',
-            '5': 'test, 测试',
-            '6': 'test, 测试',
+            '1': 'test',
+            '2': 'test',
+            '5': 'test',
+            '6': 'test',
             }
         }
     }
@@ -105,6 +107,7 @@ class ApiIntegration(Integration):
 
 def get_integration():
 #    return  DummyIntegration()
+    logger.info(settings.API_HOST)
     return ApiIntegration(settings.API_HOST, settings.ADMIN, settings.MASTER_KEY)
 
 integration = get_integration()
