@@ -65,7 +65,8 @@ EloggerListController.prototype = {
                 status:'saved',
                 day:cur.date().getDate(),
                 month:cur.month(),
-                year:cur.year()
+                year:cur.year(),
+                weekDay:cur.date().getDay()
 
             });
             cur.adjust("D", 1);

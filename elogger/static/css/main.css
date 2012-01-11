@@ -261,3 +261,11 @@ tools
 .log .saved{
     display: none;
 }
+
+.week_day_6{
+    color: #556b2f;
+}
+
+.week_day_0{
+    color: maroon;
+}
