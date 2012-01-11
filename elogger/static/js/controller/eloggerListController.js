@@ -76,13 +76,16 @@ EloggerListController.prototype = {
         var me = this;
         console.log("log saved:", log);
         log.status='saving';
+        var saving = $('#saving_log_{0}_{1}_{2}'.format(log.year, log.month, log.day));
+
+        saving.show('slow');
         me.$xhr("POST", '/logs', {
             day:log.day,
             month:log.month,
             year:log.year,
             content:log.content
         }, function (code, data) {
-            log.status='saved';
+            saving.hide();
         });
     }
 
