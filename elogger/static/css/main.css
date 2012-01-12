@@ -127,15 +127,55 @@ a:hover {
     font-weight: bold;
 }
 
-#year {
-    font-family: 'Jokerman', 'Comic Sans MS', serif;
-    position: absolute;
-    right: 24px;
-    top: 50px;
-    font-size: 20px;
-    padding: 40px 60px;
-    color: #491c09;
-    font-weight: bold;
+/*#searcher {*/
+    /*font-family: 'Jokerman', 'Comic Sans MS', serif;*/
+    /*border: 2px #af8053 solid;*/
+    /*background: transparent;*/
+    /*position: absolute;*/
+    /*right: 100px;*/
+    /*top: 100px;*/
+    /*height: 24px;*/
+    /*outline: none;*/
+    /*color: #491c09;*/
+
+    /*color: #491c09;*/
+
+/*}*/
+
+
+#back-top {
+    position: fixed;
+    bottom: 15px;
+    /*margin-left: -50px;*/
+    right: 50px;
+}
+
+#back-top a {
+    width: 108px;
+    display: block;
+    text-align: center;
+    font: 11px/100% Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #bbb;
+    transition: 1s;
+}
+#back-top a:hover {
+    color: #000;
+}
+
+/* arrow icon (span tag) */
+#back-top span {
+    width: 108px;
+    height: 108px;
+    display: block;
+    margin-bottom: 7px;
+    background: #ddd url(../images/up-arrow.png) no-repeat center center;
+    border-radius: 15px;
+    transition: 1s;
+}
+#back-top a:hover span {
+    background-color: #777;
 }
 
 /* class */

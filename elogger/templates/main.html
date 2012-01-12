@@ -6,8 +6,7 @@
     <title>eLogger</title>
     <link rel="stylesheet" href="{{ static_url('css/main.css') }}"/>
     <link rel="stylesheet" href="{{ static_url('js/lib/fancybox-2.0.4/jquery.fancybox.css') }}"/>
-
-    <script language="JavaScript" src="{{ static_url('js/lib/jquery-1.7.min.js') }}"></script>
+    <script language="JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script language="JavaScript" src="{{ static_url('js/lib/jquery.glob.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/lib/jquery.date.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/lib/underscore.js') }}"></script>
@@ -15,14 +14,45 @@
     <script language="JavaScript" src="{{ static_url('js/lib/fancybox-2.0.4/jquery.fancybox.pack.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/directive/fancybox.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
+    <script language="JavaScript">
+        $(function(){
 
+            // hide #back-top first
+            $("#back-top").hide();
+
+            // fade in #back-top
+            $(function () {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 100) {
+                        $('#back-top').fadeIn();
+                    } else {
+                        $('#back-top').fadeOut();
+                    }
+                });
+
+                // scroll body to 0px on click
+                $('#back-top a').click(function () {
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 800);
+                    return false;
+                });
+            });
+
+        });
+    </script>
 </head>
 <body>
 <header>
     <img src="{{ static_url('images/logo.png') }}" alt="eLogger"/>
+
     <div id="user">@{{ user['nickname'] }}</div>
-    <div id="month">Jan.</div>
-    <div id="year">2012</div>
+    <div id="month">
+        <span >Jan.</span>
+        <span >2012</span>
+    </div>
+    <!--<input type="text" id="searcher" placeholder="搜索"/>-->
+
 </header>
 
 <article ng:controller="EloggerListController" ng:init="initialize()">
@@ -41,7 +71,9 @@
 
     <section class="loading" ng:show="isLoading">Loading...</section>
 </article>
-
+<p id="back-top">
+    <a href="#top"><span></span></a>
+</p>
 <footer>
     <p>
         Copyright
