@@ -15,7 +15,7 @@ angular.directive('my:fancybox', function(expression, compiledElement) {
                 openEffect    : 'none',
                 closeEffect    : 'none',
                 beforeLoad: function() {
-                    this.title = log.date;
+                    this.title = log.title;
                 },
                 afterClose: function() {
                     currentScope.saveLog(log);

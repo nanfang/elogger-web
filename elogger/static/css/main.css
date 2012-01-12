@@ -155,6 +155,14 @@ a:hover {
     padding-top: 10px;
 }
 
+.loading {
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 0 0 0;
+    font-size: 120%;
+    height: 40px;
+}
+
 .log:hover .log_manage {
     display: block;
 }
@@ -233,12 +241,7 @@ tools
     margin: 10px;
 }
 
-.loading {
-    position: fixed;
-    bottom: 50px;
-    right: 20px;
-    font-size: 50px;
-}
+
 
 .edit_log {
     height: 100%;

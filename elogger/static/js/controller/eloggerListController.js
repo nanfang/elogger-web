@@ -1,3 +1,5 @@
+
+
 String.prototype.format = function () {
     var formatted = this;
     for (var i = 0; i < arguments.length; i++) {
@@ -13,6 +15,8 @@ function EloggerListController($xhr) {
     this.logs = [];
     this.monthsFetched = 0;
     this.lastLoadedDate = null;
+    this.autoLoading=true;
+    this.isLoading=false;
 }
 
 EloggerListController.prototype = {
@@ -20,17 +24,20 @@ EloggerListController.prototype = {
         var me = this;
         var today = $.date();
         me.load(today.year(), today.month(), me.loadNextMonth);
-        $(window).scroll(function () {
-            if (!me.isLoading && $(window).scrollTop() > ($(document).height() - $(window).height() - 3)
-                && me.autoLoad()) {
-                me.loadNextMonth();
-            }
-        });
+        if(me.autoLoading){
+            $(window).scroll(function () {
+                if (!me.isLoading && $(window).scrollTop() > ($(document).height() - $(window).height() - 3)
+                    && me.isScrolling()) {
+                    me.loadNextMonth();
+                }
+            });
+        }
     },
     load:function (year, month, callback) {
         var me = this;
         me.$eval();
         me.isLoading = true;
+        me.$eval();
         me.$xhr("GET", '/logs?year=' + year + '&month=' + month, function (code, data) {
             var monthLogs = me.monthLogs(year, month);
             _.each(monthLogs, function (log) {
@@ -49,7 +56,7 @@ EloggerListController.prototype = {
         var loadStart = this.lastLoadedDate.adjust("D", -1);
         this.load(loadStart.year(), loadStart.month());
     },
-    autoLoad:function () {
+    isScrolling:function () {
         return this.monthsFetched < this.MAX_AUTO_FETCH_NUM;
     },
     monthLogs:function (year, month) {
