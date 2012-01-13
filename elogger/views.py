@@ -29,6 +29,8 @@ class LoginHandler(RequestHandler):
     def get(self, *args, **kwargs):
         self.render("login.html")
 
+
+
 class WeiboMixin(OAuthMixin):
     _OAUTH_REQUEST_TOKEN_URL = "http://api.t.sina.com.cn/oauth/request_token"
     _OAUTH_ACCESS_TOKEN_URL = "http://api.t.sina.com.cn/oauth/access_token"
@@ -136,6 +138,18 @@ class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
 class BaseHandler(RequestHandler, SessionMixin):
     def get_current_user(self):
         return self.session.get('user')
+
+class LogoutHandler(BaseHandler):
+    def initialize(self, redirect_url):
+        self.redirect_url=redirect_url
+
+    def get(self, *args, **kwargs):
+        self.session.delete('user')
+        self.redirect(self.redirect_url)
+
+    def post(self, *args, **kwargs):
+        return self.get(*args, **kwargs)
+
 
 class MainHandler(BaseHandler):
     @authenticated

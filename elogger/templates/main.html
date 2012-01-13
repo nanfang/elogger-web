@@ -15,7 +15,7 @@
     <script language="JavaScript" src="{{ static_url('js/directive/fancybox.js') }}"></script>
     <script language="JavaScript" src="{{ static_url('js/controller/eloggerListController.js') }}"></script>
     <script language="JavaScript">
-        $(function(){
+        $(function () {
 
             // hide #back-top first
             $("#back-top").hide();
@@ -33,7 +33,7 @@
                 // scroll body to 0px on click
                 $('#back-top a').click(function () {
                     $('body,html').animate({
-                        scrollTop: 0
+                        scrollTop:0
                     }, 800);
                     return false;
                 });
@@ -46,10 +46,14 @@
 <header>
     <img src="{{ static_url('images/logo.png') }}" alt="eLogger"/>
 
-    <div id="user">@{{ user['nickname'] }}</div>
+
+    <dl id="user">
+        <dt>@{{ user['nickname'] }}</dt>
+        <dd><a href="/logout">退出</a></dd>
+    </dl>
     <div id="month">
-        <span >Jan.</span>
-        <span >2012</span>
+        <span>Jan.</span>
+        <span>2012</span>
     </div>
     <!--<input type="text" id="searcher" placeholder="搜索"/>-->
 
