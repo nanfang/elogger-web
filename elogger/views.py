@@ -167,7 +167,7 @@ class DayLogHandler(BaseHandler):
         year = self.get_argument("year", None)
         month = self.get_argument("month", None) # 1 based
         # TODO check args
-        print('%s-%s' % (year, month))
+        logger.debug('%s-%s' % (year, month))
         integration.get_month_logs(
             username=user['username'],
             year=int(year),
@@ -201,6 +201,7 @@ class DayLogHandler(BaseHandler):
 class PreviewHandler(BaseHandler):
 
     def get(self, *args, **kwargs):
+        logger.debug('preview')
         self.render('preview.html')
 
 

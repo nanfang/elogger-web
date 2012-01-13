@@ -1,1 +1,2 @@
 DEBUG=True
+LOG_LEVEL='INFO'

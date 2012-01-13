@@ -2,7 +2,7 @@ from paver.setuputils import setup
 from paver.easy import *
 
 setup(
-        name="eLogger",
+        name="eLogger Web",
         packages=['elogger'],
         version="2.0",
         )
