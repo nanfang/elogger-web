@@ -16,7 +16,6 @@ application_settings = {
     "cookie_secret": "81iETzKXUAGaYckL5gEmGeJJFuYh8EQnp2XdTP1o/Vo=",
     'debug': settings.DEBUG,
     "login_url": "/login",
-
     'pycket': {
         'engine': 'redis',
         'storage': {
@@ -29,8 +28,6 @@ application_settings = {
             'expires_days': 30,
             },
         },
-
-
     }
 
 application = tornado.web.Application([

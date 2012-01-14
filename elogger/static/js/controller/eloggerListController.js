@@ -1,5 +1,3 @@
-
-
 String.prototype.format = function () {
     var formatted = this;
     for (var i = 0; i < arguments.length; i++) {
@@ -9,14 +7,18 @@ String.prototype.format = function () {
     return formatted;
 };
 
+var DAY_LOG_DAILY = 0;
+var DAY_LOG_RETRO = 1;
+
+
 function EloggerListController($xhr) {
     this.MAX_AUTO_FETCH_NUM = 36;
     this.$xhr = $xhr;
     this.logs = [];
     this.monthsFetched = 0;
     this.lastLoadedDate = null;
-    this.autoLoading=true;
-    this.isLoading=false;
+    this.autoLoading = true;
+    this.isLoading = false;
 }
 
 EloggerListController.prototype = {
@@ -24,7 +26,7 @@ EloggerListController.prototype = {
         var me = this;
         var today = $.date();
         me.load(today.year(), today.month(), me.loadNextMonth);
-        if(me.autoLoading){
+        if (me.autoLoading) {
             $(window).scroll(function () {
                 if (!me.isLoading && $(window).scrollTop() > ($(document).height() - $(window).height() - 3)
                     && me.isScrolling()) {
@@ -33,17 +35,62 @@ EloggerListController.prototype = {
             });
         }
     },
+    raw_log:function (date) {
+        return {
+            id:"",
+            title:date.format("yyyy-MM-dd"),
+            index:date.date().getDate(),
+            status:'saved',
+            day:date.date().getDate(),
+            month:date.month(),
+            year:date.year(),
+            weekDay:date.date().getDay(),
+            type:DAY_LOG_DAILY
+        };
+    },
+
+    current_date:function (year, month) {
+        var cur = null;
+        var today = $.date();
+        if (year === today.year() && month === today.month()) {
+            cur = today;
+        } else if (!(year > today.year() || (year === today.year() && month > today.month()))) {
+            cur = $.date('{0}-{1}-01'.format(year, month), "yyyy-MM-dd");
+            cur.adjust("M", 1);
+            cur.adjust("D", -1);
+        }
+        return cur;
+    },
+
     load:function (year, month, callback) {
         var me = this;
-        me.$eval();
         me.isLoading = true;
         me.$eval();
         me.$xhr("GET", '/logs?year=' + year + '&month=' + month, function (code, data) {
-            var monthLogs = me.monthLogs(year, month);
-            _.each(monthLogs, function (log) {
-                log.content = data["" + log.index];
-                me.logs.push(log);
-            });
+            var cur = me.current_date(year, month);
+            if (!cur) {
+                return;
+            }
+
+            while (cur.month() === month && cur.year() === year) {
+                var logs = data["" + cur.date().getDate()];
+                if (logs) {
+                    _.each(logs, function (log) {
+                        var day_log = me.raw_log(cur);
+                        day_log.id = log.id;
+                        day_log.type = log.type;
+                        day_log.content = log.content;
+                        if (log.type != DAY_LOG_DAILY) {
+                            day_log.title = log.title;
+                        }
+                        me.logs.push(day_log);
+                    });
+                } else {
+                    me.logs.push(me.raw_log(cur));
+                }
+                me.lastLoadedDate = cur;
+                cur.adjust("D", -1);
+            }
             me.monthsFetched += 1;
             me.isLoading = false;
             me.$eval();
@@ -52,48 +99,28 @@ EloggerListController.prototype = {
             }
         });
     },
-    loadNextMonth:function() {
+    loadNextMonth:function () {
         var loadStart = this.lastLoadedDate.adjust("D", -1);
         this.load(loadStart.year(), loadStart.month());
     },
     isScrolling:function () {
         return this.monthsFetched < this.MAX_AUTO_FETCH_NUM;
     },
-    monthLogs:function (year, month) {
-        var me = this;
-        var today = $.date();
-        var cur = $.date('{0}-{1}-01'.format(year, month), "yyyy-MM-dd");
-        me.lastLoadedDate = cur.clone();
-        var result = [];
-        while (cur.month() === month && cur.year() === year && today.date().getTime() >= cur.date().getTime()) {
-            result.push({
-                title:cur.format(),
-                index:cur.date().getDate(),
-                status:'saved',
-                day:cur.date().getDate(),
-                month:cur.month(),
-                year:cur.year(),
-                weekDay:cur.date().getDay()
-
-            });
-            cur.adjust("D", 1);
-        }
-        return result.reverse();
-    },
     saveLog:function (log) {
         var me = this;
-        console.log("log saved:", log);
-        log.status='saving';
-        var saving = $('#saving_log_{0}_{1}_{2}'.format(log.year, log.month, log.day));
-
-        saving.show('slow');
+        log.status = 'saving';
+        me.$eval();
         me.$xhr("POST", '/logs', {
+            id:log.id,
+            type:log.type,
             day:log.day,
             month:log.month,
             year:log.year,
+            title:log.title,
             content:log.content
         }, function (code, data) {
-            saving.hide();
+            log.status = 'saved';
+            me.$eval();
         });
     }
 

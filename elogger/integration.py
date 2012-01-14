@@ -6,7 +6,8 @@ import uuid
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from elogger import settings
 
-logger=logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+
 class Integration:
     def get_month_logs(self, username, year, month, callback):
         return callback({})
@@ -16,6 +17,7 @@ class Integration:
 
     def register_user(self, user, callback):
         callback()
+
 
 class DummyIntegration(Integration):
     dummy_data = {
@@ -37,18 +39,17 @@ class DummyIntegration(Integration):
 
     def get_month_logs(self, username, year, month, callback):
         callback(
-            self.dummy_data.get(year, {}).get(month,{})
+            self.dummy_data.get(year, {}).get(month, {})
         )
 
     def put_day_log(self, username, year, month, day, content, callback):
         if year not in self.dummy_data:
-            self.dummy_data[year]={}
+            self.dummy_data[year] = {}
         if month not in self.dummy_data[year]:
-            self.dummy_data[year][month]={}
+            self.dummy_data[year][month] = {}
 
-        self.dummy_data[year][month][day]=content
+        self.dummy_data[year][month][day] = content
         return callback(True)
-
 
 
 class ApiIntegration(Integration):
@@ -62,7 +63,7 @@ class ApiIntegration(Integration):
     def get_month_logs(self, username, year, month, callback):
         self.http_client.fetch(
             HTTPRequest(
-                url='%s/daylogs?year=%s&month=%s' % (self.api_url,year, month),
+                url='%s/daylogs?year=%s&month=%s' % (self.api_url, year, month),
                 auth_username=username,
                 auth_password=self.master_key,
             ),
@@ -83,11 +84,24 @@ class ApiIntegration(Integration):
                     content=content
                 ))
             ),
-            callback=lambda response: callback(response.code==200)
+            callback=lambda response: callback(response.code == 200)
         )
 
     def _on_get_logs(self, response):
-        return dict([(log['day'],log['content']) for log in  json.loads(response.body)])
+        day_logs = {}
+        for log in  json.loads(response.body):
+            day = log['day']
+
+            if day not in day_logs:
+                day_logs[day] = []
+            day_logs[day].append(dict(
+                content=log['content'],
+                id=log['id'],
+                title=log['title'],
+                type=log['type']
+            ))
+
+        return day_logs
 
     def register_user(self, user, success):
         self.http_client.fetch(
@@ -102,8 +116,9 @@ class ApiIntegration(Integration):
                     api_key='',
                 )),
             ),
-            callback = lambda response:success()
+            callback=lambda response: success()
         )
+
 
 def get_integration():
 #    return  DummyIntegration()
