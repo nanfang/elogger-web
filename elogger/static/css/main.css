@@ -146,38 +146,17 @@ a:hover {
 #back-top {
     position: fixed;
     bottom: 15px;
-    /*margin-left: -50px;*/
-    right: 50px;
+    right: 80px;
 }
 
-/*#back-top a {*/
-    /*width: 108px;*/
-    /*display: block;*/
-    /*text-align: center;*/
-    /*font: 11px/100% Arial, Helvetica, sans-serif;*/
-    /*text-transform: uppercase;*/
-    /*text-decoration: none;*/
-    /*color: #bbb;*/
-    /*transition: 1s;*/
-/*}*/
-/*#back-top a:hover {*/
-    /*color: #000;*/
-/*}*/
 
 /* arrow icon (span tag) */
 #back-top span {
-    width: 78px;
-    height: 132px;
+    width: 62px;
+    height: 101px;
     display: block;
-
-    /*margin-bottom: 7px;*/
-    background:  url(../images/go-top.gif) no-repeat center center;
-    /*border-radius: 15px;*/
-    /*transition: 1s;*/
+    background:  url(../images/go-top.png) no-repeat center center;
 }
-/*#back-top a:hover span {*/
-    /*background-color: #777;*/
-/*}*/
 
 dd {
     display:none;
