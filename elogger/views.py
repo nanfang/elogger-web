@@ -188,7 +188,8 @@ class DayLogHandler(BaseHandler):
             content=daylog['content'],
             callback=self._on_put_log)
 
-    def _on_put_log(self, success):
+    def _on_put_log(self, id):
+        self.write(id)
         self.set_status(200)
         self.finish()
 

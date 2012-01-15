@@ -39,7 +39,7 @@ EloggerListController.prototype = {
         return {
             id:"",
             title:date.format("yyyy-MM-dd"),
-            index:date.date().getDate(),
+            index:"unsaved-" + date.format("yyyyMMdd"),
             status:'saved',
             day:date.date().getDate(),
             month:date.month(),
@@ -78,6 +78,7 @@ EloggerListController.prototype = {
                     _.each(logs, function (log) {
                         var day_log = me.raw_log(cur);
                         day_log.id = log.id;
+                        day_log.index = "saved-"+log.id;
                         day_log.type = log.type;
                         day_log.content = log.content;
                         if (log.type != DAY_LOG_DAILY) {
@@ -108,7 +109,7 @@ EloggerListController.prototype = {
     },
     saveLog:function (log) {
         var me = this;
-        log.status = 'saving';
+        $("#"+log.index).show(1000);
         me.$eval();
         me.$xhr("POST", '/logs', {
             id:log.id,
@@ -119,11 +120,12 @@ EloggerListController.prototype = {
             title:log.title,
             content:log.content
         }, function (code, data) {
-            log.status = 'saved';
+            $("#"+log.index).hide(1000);
+            log.id=data;
+            log.index = "saved-"+log.id;
             me.$eval();
         });
     }
-
 };
 
 EloggerListController.$inject = ['$xhr'];

@@ -84,7 +84,7 @@ class ApiIntegration(Integration):
                     content=content
                 ))
             ),
-            callback=lambda response: callback(response.code == 200)
+            callback=lambda response: callback(response.body)
         )
 
     def _on_get_logs(self, response):
