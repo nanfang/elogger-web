@@ -1,6 +1,6 @@
 /* css reset, yahoo style */
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
-form, fieldset, input, textarea, p, blockquote, th, td {
+form, fieldset, input, textarea, p, blockquote, th, td{
     padding: 0;
     margin: 0;
 }
@@ -150,33 +150,34 @@ a:hover {
     right: 50px;
 }
 
-#back-top a {
-    width: 108px;
-    display: block;
-    text-align: center;
-    font: 11px/100% Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #bbb;
-    transition: 1s;
-}
-#back-top a:hover {
-    color: #000;
-}
+/*#back-top a {*/
+    /*width: 108px;*/
+    /*display: block;*/
+    /*text-align: center;*/
+    /*font: 11px/100% Arial, Helvetica, sans-serif;*/
+    /*text-transform: uppercase;*/
+    /*text-decoration: none;*/
+    /*color: #bbb;*/
+    /*transition: 1s;*/
+/*}*/
+/*#back-top a:hover {*/
+    /*color: #000;*/
+/*}*/
 
 /* arrow icon (span tag) */
 #back-top span {
-    width: 108px;
-    height: 108px;
+    width: 78px;
+    height: 132px;
     display: block;
-    margin-bottom: 7px;
-    background: #ddd url(../images/up-arrow.png) no-repeat center center;
-    border-radius: 15px;
-    transition: 1s;
+
+    /*margin-bottom: 7px;*/
+    background:  url(../images/go-top.gif) no-repeat center center;
+    /*border-radius: 15px;*/
+    /*transition: 1s;*/
 }
-#back-top a:hover span {
-    background-color: #777;
-}
+/*#back-top a:hover span {*/
+    /*background-color: #777;*/
+/*}*/
 
 dd {
     display:none;
@@ -204,6 +205,7 @@ dl:hover dd {
 }
 
 .log {
+    position: relative;
     padding-top: 10px;
 }
 
@@ -220,11 +222,15 @@ dl:hover dd {
 }
 
 .log_title {
-    float: left;
+    /*float: left;*/
+    position: absolute;
+    top:8px;
+    left:-35px;
     text-align: center;
-    width: 125px;
+    width: 200px;
     font-size: 16px;
     font-family: cursive;
+    vertical-align: top;
 }
 
 .log_content {
@@ -293,34 +299,40 @@ tools
     margin: 10px;
 }
 
-
-
-.edit_log {
+.log_editor{
+    margin: 0;
+    /*border: 30px solid #000000;*/
     height: 100%;
     display: none;
+    background: url("../images/editor-frame.gif") no-repeat top left;
+    border-radius: 10px;
 }
 
-.edit_log textarea {
+.log_editor textarea {
+    position: relative;
+    top:30px;
+    /*left:0;*/
     padding: 5px;
-    margin: auto;
-    width: 97%;
-    height: 97%;
+    margin: 0 auto;
+    width: 90%;
+    height: 83%;
     display: block;
     outline: none;
+    border: none;
 }
 
 .log .saving {
-    display: block;
+    display: none;
+    color: #491c09;
+    font-weight: bolder;
 }
 
-.log .saved{
-    display: none;
-}
 
 .week_day_6{
-    color: #556b2f;
+    background:url("../images/sat.png") no-repeat top left;
+
 }
 
 .week_day_0{
-    color: maroon;
+    background:url("../images/sun.png") no-repeat top left;
 }
