@@ -98,12 +98,6 @@ class WeiboMixin(OAuthMixin):
         args["oauth_signature"] = signature
         return url + "?" + urllib.urlencode(args)
 
-
-    def _parse_user_response(self, callback, user):
-        if user:
-            user["username"] = user["screen_name"]
-        callback(user)
-
 class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
     def initialize(self, api_key, api_secret, auth_callback, auth_success):
         self.api_key=api_key
@@ -124,7 +118,8 @@ class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
         user_info = json.loads(response.body)
 
         user = {
-            'username':'weibo/%s' %user_info['domain'],
+            'userid':'weibo/%s' %user_info['id'],
+            'username':'weibo/%s' %user_info['name'],
             'nickname':user_info['name'],
             'access_token':access_token
         }
@@ -169,7 +164,7 @@ class DayLogHandler(BaseHandler):
         # TODO check args
         logger.debug('%s-%s' % (year, month))
         integration.get_month_logs(
-            username=user['username'],
+            userid=user['userid'],
             year=int(year),
             month=int(month),
             callback=self._on_get_logs)
@@ -181,7 +176,7 @@ class DayLogHandler(BaseHandler):
         user = self.current_user
         daylog = json.loads(self.request.body)
         integration.put_day_log(
-            username=user['username'],
+            userid=user['userid'],
             year=daylog['year'],
             month=daylog['month'],
             day=daylog['day'],

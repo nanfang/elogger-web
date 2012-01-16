@@ -60,22 +60,22 @@ class ApiIntegration(Integration):
         self.admin = admin
         self.master_key = master_key
 
-    def get_month_logs(self, username, year, month, callback):
+    def get_month_logs(self, userid, year, month, callback):
         self.http_client.fetch(
             HTTPRequest(
                 url='%s/daylogs?year=%s&month=%s' % (self.api_url, year, month),
-                auth_username=username,
+                auth_username=userid,
                 auth_password=self.master_key,
             ),
             callback=lambda response: callback(self._on_get_logs(response))
         )
 
-    def put_day_log(self, username, year, month, day, content, callback):
+    def put_day_log(self, userid, year, month, day, content, callback):
         self.http_client.fetch(
             HTTPRequest(
                 method='POST',
                 url='%s/daylogs' % self.api_url,
-                auth_username=username,
+                auth_username=userid,
                 auth_password=self.master_key,
                 body=json.dumps(dict(
                     year=year,
@@ -111,7 +111,9 @@ class ApiIntegration(Integration):
                 auth_username=self.admin,
                 auth_password=self.master_key,
                 body=json.dumps(dict(
+                    userid=user['userid'],
                     username=user['username'],
+                    nickname=user['nickname'],
                     type='SERVER',
                     api_key='',
                 )),
