@@ -119,8 +119,8 @@ class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
 
         user = {
             'userid':'weibo/%s' %user_info['id'],
-            'username':'weibo/%s' %user_info['name'],
-            'nickname':user_info['name'],
+            'username':user_info['name'],
+            'nickname':user_info['screen_name'],
             'access_token':access_token
         }
 
