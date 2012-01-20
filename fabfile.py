@@ -62,6 +62,7 @@ def copy():
 
 @task
 def stop():
+    # TODO copy mentainance page for nginx
     with cd(DEPLOY_DIR):
         run('. %s/bin/activate && supervisorctl stop all' % PYTHON_ENV_DIR)
 

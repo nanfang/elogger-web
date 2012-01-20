@@ -44,7 +44,7 @@ $.date = function ( datestring, formatstring ) {
 		daysInMonth: function( year, month ) {
 			year = year || date.getFullYear();
 			month = month || date.getMonth();
-			return 32 - new Date( year, month, 32 ).getDate();
+			return (new Date( year, month, 0)).getDate();
 		},
 		monthname: function() {
 			return calendar.months.names[ date.getMonth() ];

@@ -46,7 +46,7 @@ body {
     color: #491c09;
     font-size: 12px;
     line-height: 140%;
-    background: url(../images/bg.jpg) top center fixed;
+    background: #af8053 url(../images/bg.jpg) top center fixed;
 }
 
 header {
@@ -126,22 +126,6 @@ a:hover {
     color: #491c09;
     font-weight: bold;
 }
-
-/*#searcher {*/
-    /*font-family: 'Jokerman', 'Comic Sans MS', serif;*/
-    /*border: 2px #af8053 solid;*/
-    /*background: transparent;*/
-    /*position: absolute;*/
-    /*right: 100px;*/
-    /*top: 100px;*/
-    /*height: 24px;*/
-    /*outline: none;*/
-    /*color: #491c09;*/
-
-    /*color: #491c09;*/
-
-/*}*/
-
 
 #back-top {
     position: fixed;
@@ -305,7 +289,6 @@ tools
     color: #491c09;
     font-weight: bolder;
 }
-
 
 .week_day_6{
     background:url("../images/sat.png") no-repeat top left;

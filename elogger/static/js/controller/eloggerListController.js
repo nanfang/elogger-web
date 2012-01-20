@@ -73,9 +73,9 @@ EloggerListController.prototype = {
             }
 
             while (cur.month() === month && cur.year() === year) {
-                var logs = data["" + cur.date().getDate()];
-                if (logs) {
-                    _.each(logs, function (log) {
+                var saved = data["" + cur.date().getDate()];
+                if (saved) {
+                    _.each(saved, function (log) {
                         var day_log = me.raw_log(cur);
                         day_log.id = log.id;
                         day_log.index = "saved-"+log.id;
