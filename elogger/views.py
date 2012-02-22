@@ -153,6 +153,22 @@ class MainHandler(BaseHandler):
         self.render('main.html',
             **{'user': user})
 
+class CuiMingHandler(BaseHandler):
+    @authenticated
+
+    def get(self, *args, **kwargs):
+        user = self.current_user
+        self.render('cuiming.html',
+            **{'user': user})
+
+
+    @authenticated
+    @ajax_call
+    def post(self, *args, **kwargs):
+        pass
+
+
+
 class DayLogHandler(BaseHandler):
     @asynchronous
     @authenticated
