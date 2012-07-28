@@ -115,15 +115,23 @@ class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
     def _on_auth(self, access_token, response):
         if not response:
             raise HTTPError(500, "Weibo auth failed")
-        user_info = json.loads(response.body)
 
-        user = {
-            'userid':'weibo/%s' %user_info['id'],
-            'username':user_info['name'],
-            'nickname':user_info['screen_name'],
-            'access_token':access_token
-        }
+        if response.code == 200:
+            user_info = json.loads(response.body)
 
+            user = {
+                'userid':'weibo/%s' %user_info['id'],
+                'username':user_info['name'],
+                'nickname':user_info['screen_name'],
+                'access_token':access_token
+            }
+        else:
+            user = {
+                'userid':'weibo/%s' % access_token['user_id'],
+                'username':'weibo/%s' % access_token['user_id'],
+                'nickname':'weibo/%s' % access_token['user_id'],
+                'access_token':access_token
+            }
         def on_register():
             self.session.set('user', user)
             self.redirect(self.auth_success, permanent=True)
