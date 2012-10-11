@@ -3,6 +3,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
 form, fieldset, input, textarea, p, blockquote, th, td{
     padding: 0;
     margin: 0;
+
 }
 
 table {
@@ -250,16 +251,17 @@ tools
 
 .login  .logo {
     position: absolute;
-    top: 100px;
-    right: 150px;
+    top: 50px;
+    right: 100px;
 }
 
-.login  .btn {
+.login  .form {
     position: absolute;
-    top: 250px;
-    right: 120px;
-    width: 200px;
+    top: 180px;
+    right: 100px;
+    width: 400px;
     margin: 10px;
+    color: #f5deb3;
 }
 
 .log_editor{
@@ -298,3 +300,47 @@ tools
 .week_day_0{
     background:url("../images/sun.png") no-repeat top left;
 }
+
+.btn_signup {
+    float: right;
+    margin-top: 50px;
+}
+
+#signup{
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 800px;
+    height: 500px;
+    margin-left: -400px;
+    margin-top: -250px;
+    z-index: 1;
+}
+
+.btn-warning {
+    width: 220px !important;
+}
+
+legend {
+    font-style: italic;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 40px !important;
+    color: #f0d9b8 !important;
+    padding-bottom: 40px !important;
+}
+
+.input-medium {
+    padding: 15px !important;
+    width: 400px !important;
+    -webkit-border-radius: 16px !important ;
+    -moz-border-radius: 16px !important;
+    border-radius: 16px !important;
+    font-size: 20px !important;
+}
+.btn-info{
+    width: 435px !important;
+}
+
+
