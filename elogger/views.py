@@ -6,8 +6,11 @@ import urllib
 import time
 import binascii
 import uuid
+import httplib
+from config import secret
 from tornado import escape, httpclient
 from tornado.auth import  OAuthMixin, _oauth10a_signature, _oauth_signature
+from tornado.httpclient import HTTPRequest
 from tornado.web import RequestHandler, asynchronous, authenticated, HTTPError
 from pycket.session import SessionMixin
 
@@ -25,9 +28,53 @@ def ajax_call(view_func):
     return _wrapped_view
 
 
-class LoginHandler(RequestHandler):
+class LoginHandler(RequestHandler, SessionMixin):
     def get(self, *args, **kwargs):
-        self.render("login.html")
+        self.render("login.html", msg='')
+
+    @asynchronous
+    def post(self, *args, **kwargs):
+        username = self.get_argument("username", None)
+        password = self.get_argument("password", None)
+        if not username:
+            self.render("login.html", msg='Username can not be empty!')
+            return
+
+        if not password:
+            self.render("login.html", msg='Password can not be empty!')
+            return
+
+        # TODO support email login
+        params = urllib.urlencode({"username":username,"password":password})
+        request = HTTPRequest(
+            url='https://api.parse.com/1/login?%s' % params,
+            headers={
+                "X-Parse-Application-Id": secret.PARSE_APPLICATION_ID,
+                "X-Parse-REST-API-Key": secret.PARSE_REST_API_KEY,
+            }
+        )
+
+        http = httpclient.AsyncHTTPClient()
+        http.fetch(request=request, callback=self.on_login)
+
+    def on_login(self, response):
+        result = json.loads(response.body)
+        print(result)
+        if 'username' not in result:
+            self.render("login.html", msg="Invalid Username/Password")
+            return
+
+        user = {
+                'userid':'parse/%s' % result['objectId'],
+                'username':'parse/%s' % result['username'],
+                'nickname':'%s' % result['username'],
+                'access_token': result['sessionToken']
+            }
+        def on_register():
+            self.session.set('user', user)
+            self.redirect('/', permanent=True)
+
+        integration.register_user(user, on_register)
 
 
 
@@ -160,21 +207,6 @@ class MainHandler(BaseHandler):
         user = self.current_user
         self.render('main.html',
             **{'user': user})
-
-class CuiMingHandler(BaseHandler):
-    @authenticated
-
-    def get(self, *args, **kwargs):
-        user = self.current_user
-        self.render('cuiming.html',
-            **{'user': user})
-
-
-    @authenticated
-    @ajax_call
-    def post(self, *args, **kwargs):
-        pass
-
 
 
 class DayLogHandler(BaseHandler):
