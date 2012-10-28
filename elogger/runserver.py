@@ -3,7 +3,7 @@ import os
 import sys
 import tornado.ioloop
 import tornado.web
-from elogger.views import MainHandler, LoginHandler, WeiboHandler, PreviewHandler, DayLogHandler, LogoutHandler
+from elogger.views import MainHandler, SigninHandler, WeiboHandler, PreviewHandler, DayLogHandler, LogoutHandler, SignupHandler
 from elogger import settings
 from elogger.config.secret import WEIBO_API_KEY, WEIBO_API_SECRET
 
@@ -15,7 +15,7 @@ application_settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "cookie_secret": "81iETzKXUAGaYckL5gEmGeJJFuYh8EQnp2XdTP1o/Vo=",
     'debug': settings.DEBUG,
-    "login_url": "/login",
+    "login_url": "/sign-in",
     'pycket': {
         'engine': 'redis',
         'storage': {
@@ -33,8 +33,9 @@ application_settings = {
 application = tornado.web.Application([
     (r'/', MainHandler),
     (r'/preview', PreviewHandler),
-    (r'/login', LoginHandler),
-    (r'/logout', LogoutHandler, {'redirect_url':'/login'}),
+    (r'/sign-in', SigninHandler),
+    (r'/sign-up', SignupHandler),
+    (r'/logout', LogoutHandler, {'redirect_url':'/sign-in'}),
     (r'/logs', DayLogHandler),
     (r'/auth/weibo', WeiboHandler, {'api_key': WEIBO_API_KEY,
                                     'api_secret': WEIBO_API_SECRET,

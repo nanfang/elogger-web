@@ -7,6 +7,7 @@ import time
 import binascii
 import uuid
 import httplib
+from functools import partial
 from config import secret
 from tornado import escape, httpclient
 from tornado.auth import  OAuthMixin, _oauth10a_signature, _oauth_signature
@@ -28,20 +29,20 @@ def ajax_call(view_func):
     return _wrapped_view
 
 
-class LoginHandler(RequestHandler, SessionMixin):
+class SigninHandler(RequestHandler, SessionMixin):
     def get(self, *args, **kwargs):
-        self.render("login.html", msg='')
+        self.render("login.html", models={})
 
     @asynchronous
     def post(self, *args, **kwargs):
-        username = self.get_argument("username", None)
+        username = self.get_argument("username", '')
         password = self.get_argument("password", None)
         if not username:
-            self.render("login.html", msg='Username can not be empty!')
+            self.render("login.html", models=dict(username=username, error='Username can not be empty!'))
             return
 
         if not password:
-            self.render("login.html", msg='Password can not be empty!')
+            self.render("login.html", models=dict(username=username, error='Password can not be empty!'))
             return
 
         # TODO support email login
@@ -59,9 +60,8 @@ class LoginHandler(RequestHandler, SessionMixin):
 
     def on_login(self, response):
         result = json.loads(response.body)
-        print(result)
         if 'username' not in result:
-            self.render("login.html", msg="Invalid Username/Password")
+            self.render("login.html",  models=dict(error="Invalid Username/Password"))
             return
 
         user = {
@@ -76,6 +76,66 @@ class LoginHandler(RequestHandler, SessionMixin):
 
         integration.register_user(user, on_register)
 
+class SignupHandler(RequestHandler, SessionMixin):
+    def get(self, *args, **kwargs):
+        self.render("login.html",  models=dict())
+
+    @asynchronous
+    def post(self, *args, **kwargs):
+        self.username = self.get_argument("signupUsername", '')
+        self.email = self.get_argument("signupEmail", '')
+        password = self.get_argument("signupPassword", '')
+        if not self.username:
+            self.render("login.html",  models=dict(username=self.username,email=self.email, error='Username can not be empty!'))
+            return
+
+        if not self.email:
+            self.render("login.html",  models=dict(username=self.username,email=self.email, error='Email can not be empty!'))
+            return
+
+        if not password:
+            self.render("login.html",  models=dict(username=self.username,email=self.email, error='Password can not be empty!'))
+            return
+
+        request = HTTPRequest(
+            url='https://api.parse.com/1/users' ,
+            headers={
+                "X-Parse-Application-Id": secret.PARSE_APPLICATION_ID,
+                "X-Parse-REST-API-Key": secret.PARSE_REST_API_KEY,
+                "Content-Type": "application/json",
+                },
+            method='POST',
+            body = json.dumps({
+                "username": self.username,
+                "password": password,
+                "email": self.email
+            }),
+
+        )
+
+        http = httpclient.AsyncHTTPClient()
+
+        http.fetch(request=request, callback=self.on_login)
+
+    def on_login(self, response):
+        result = json.loads(response.body)
+        print(result)
+        if response.code!=201:
+            error  = result.get('error', 'Error to sign up')
+            self.render("login.html", models=dict(error=error, username=self.username,email=self.email ))
+            return
+
+        user = {
+            'userid':'parse/%s' % result['objectId'],
+            'username':'parse/%s' % self.username,
+            'nickname':'%s' % self.username,
+            'access_token': result['sessionToken']
+        }
+        def on_register():
+            self.session.set('user', user)
+            self.redirect('/', permanent=True)
+
+        integration.register_user(user, on_register)
 
 
 class WeiboMixin(OAuthMixin):

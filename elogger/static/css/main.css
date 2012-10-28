@@ -255,12 +255,16 @@ tools
     right: 100px;
 }
 
-.login  .form {
+.login .form {
     position: absolute;
     top: 180px;
     right: 100px;
     width: 400px;
     margin: 10px;
+    color: #f5deb3;
+}
+
+.error{
     color: #f5deb3;
 }
 
@@ -306,7 +310,7 @@ tools
     margin-top: 50px;
 }
 
-#signup{
+#sign-up{
     display: none;
     position: absolute;
     left: 50%;

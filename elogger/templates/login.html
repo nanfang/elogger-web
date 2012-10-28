@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="{{ static_url('css/main.css') }}"/>
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}"/>
     <script language="JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-
+    <script language="JavaScript" src="http://underscorejs.org/underscore-min.js"></script>
+    <script language="JavaScript" src="http://epeli.github.com/underscore.string/dist/underscore.string.min.js"></script>
+    <script>_.mixin(_.str.exports());</script>
 </head>
 <body>
 
-<div class="login" id="signin">
+<div id="sign-in" class="sign_view login">
     <img src="{{ static_url('images/login_sample.png') }}"/>
 
     <div class="logo">
@@ -25,7 +27,7 @@
             <div class="control-group">
                 <label class="control-label" for="username">Username</label>
                 <div class="controls">
-                    <input type="text" id="username" placeholder="Username" name="username">
+                    <input type="text" id="username" placeholder="Username" name="username" value="{{ models.get('username','') }}">
                 </div>
             </div>
             <div class="control-group">
@@ -34,54 +36,56 @@
                     <input type="password" id="inputPassword" placeholder="Password" name="password">
                 </div>
             </div>
+
             <div class="control-group">
                 <div class="controls">
                     <!--<label class="checkbox">-->
                         <!--<input type="checkbox"> Remember me-->
                     <!--</label>-->
-                    <span id="msg">
-                        {{msg}}
-                    </span>
+                    <span class="error">{{ models.get('error','') }}</span>
+
 
                     <button type="submit" id="submit" class="btn btn-large btn-warning">Sign in</button>
                     <br/><br/>
                     <a style="display: '" href="/auth/weibo"><img src="{{ static_url('images/icon_sinaweibo.png') }}"/></a>
                     <a style="display: none" href="#" style="color: #f5deb3;">Do you forget your password?</a>
+                    <br/><br/>
+                    <span>Weibo Login will be not available from Dec.1 2012</span>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-<div id="signup">
+<div id="sign-up" class="sign_view login">
 
-    <form class="form-horizontal">
+    <form class="form-horizontal" action="" method="post">
         <legend>Sign up for eLogger</legend>
         <div class="control-group">
             <div class="controls">
-                <input type="text" id="signupEmail" placeholder="Email" class="input-medium">
+                <input type="text" id="signupUsername" name="signupUsername" placeholder="Username" class="input-medium" value="{{ models.get('username','') }}">
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <input type="password" id="signupPassword" placeholder="Password" class="input-medium">
+                <input type="text" id="signupEmail" name="signupEmail" placeholder="Email" class="input-medium" value="{{ models.get('email','') }}">
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <input type="password" id="signupPasswordConfirmed" placeholder="Confirmed Password" class="input-medium">
+                <input type="password" id="signupPassword" name="signupPassword" placeholder="Password" class="input-medium">
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
+                <div><span class="error">{{ models.get('error','') }}</span></div>
                  <button type="submit" class="btn input-medium btn-info">Sign up</button>
             </div>
         </div>
     </form>
-    <a href="#" id="go-signin" type="submit" style="color:#f5deb3;">Back to Sign In</a>
 </div>
 <div class="btn_signup">
-    <a href="#" type="submit" id="go-signup" class="btn btn-large" >Sign up</a>
+    <a href="#sign_up" type="submit" id="go_sign_up" class="btn btn-large" data-showing="sign-in" >Sign up</a>
 </div>
 <script>
     $(function(){
@@ -89,26 +93,31 @@
             $(this).text('Sign in for you ...');
             $('#msg').text('');
             return true;
-
         });
+        $('#go_sign_up').click(function(){
+            var $this = $(this);
+            var showing = $this.data('showing');
+            var toShow = _.without(["sign-in", "sign-up"], showing)[0];
+            var toShowTitle = _(showing.replace('-',' ')).capitalize();
 
-        $('#go-signup').click(function(){
-            animateStyle('signup', 'signin');
+            $this.data('showing', toShow);
+            $this.html(toShowTitle);
+
+            $('#'+showing).toggle(1000);
+            $('#'+toShow).toggle(1000);
+
+            history.pushState({foo: "bar"}, toShowTitle, '/'+toShow);
+
+            $('.error').html("");
             return false;
         });
+        var toShow = window.location.pathname;
+        if(toShow === '/sign-up'){
+            $('#sign-in').hide();
+            $('#sign-up').show();
+            $('#go_sign_up').html('Sign in').data('showing', 'sign-up');
 
-        $('#go-signin').click(function(){
-            animateStyle('signin','signup');
-            return false;
-        });
-
-
-
-        function animateStyle(a,b) {
-            $("#" + a).css({ "display": "block", "opacity": "0" }).animate({ "opacity": "1" }, 1000);
-            $("#" + b).css({ "display": "none", "opacity": "1" }).animate({ "opacity": "0" }, 1000);
         }
-
     })
 </script>
 </body>
