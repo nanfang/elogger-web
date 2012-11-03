@@ -1,10 +1,12 @@
 from datetime import datetime
+import logging
 from fabric.contrib.files import exists
 from fabric.contrib.project import rsync_project
 import os
 from fabric.api import *
 from path import path
-
+logging.basicConfig()
+logging.getLogger('ssh.transport').setLevel(logging.INFO)
 
 NGINX_DIR = path('/etc/nginx/conf.d/')
 DEPLOY_DIR = path('/opt/elogger')
@@ -39,9 +41,9 @@ def dependencies():
 
 @task
 def copy():
-    with settings(warn_only=True):
-        run('rm -rf %s' % PACKAGE_BACKUP_DIR)
-        run('cp -r %s %s' % (PACKAGE_DIR, PACKAGE_BACKUP_DIR))
+#    with settings(warn_only=True):
+#        run('rm -rf %s' % PACKAGE_BACKUP_DIR)
+#        run('cp -r %s %s' % (PACKAGE_DIR, PACKAGE_BACKUP_DIR))
     rsync_project(PACKAGE_DIR,
                   '.',
                   exclude=(

@@ -24,8 +24,15 @@ function EloggerListController($xhr) {
 EloggerListController.prototype = {
     initialize:function () {
         var me = this;
+        var year = $('#logs').data('year');
+        var month = $('#logs').data('month');
+
         var today = $.date();
-        me.load(today.year(), today.month(), me.loadNextMonth);
+
+        year = year? year:today.year();
+        month = month? month:today.month();
+
+        me.load(year, month, me.loadNextMonth);
         if (me.autoLoading) {
             $(window).scroll(function () {
                 if (!me.isLoading && $(window).scrollTop() > ($(document).height() - $(window).height() - 3)

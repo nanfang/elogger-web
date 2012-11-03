@@ -8,6 +8,7 @@ import binascii
 import uuid
 import httplib
 from functools import partial
+from datetime import date
 from config import secret
 from tornado import escape, httpclient
 from tornado.auth import  OAuthMixin, _oauth10a_signature, _oauth_signature
@@ -265,8 +266,11 @@ class MainHandler(BaseHandler):
     @authenticated
     def get(self, *args, **kwargs):
         user = self.current_user
+        today = date.today()
+        year = self.get_argument('year', today.year)
+        month = self.get_argument('month', today.month)
         self.render('main.html',
-            **{'user': user})
+            **{'user': user, 'year': year, 'month': month})
 
 
 class DayLogHandler(BaseHandler):

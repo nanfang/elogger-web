@@ -52,14 +52,13 @@
         <dd><a href="/logout">退出</a></dd>
     </dl>
     <div id="month">
-        <span>Jan.</span>
-        <span>2012</span>
+        <span>{{ year }}</span>.<span>{{ month }}</span>
     </div>
     <!--<input type="text" id="searcher" placeholder="搜索"/>-->
 
 </header>
 
-<article ng:controller="EloggerListController" ng:init="initialize()">
+<article id="logs" ng:controller="EloggerListController" ng:init="initialize()" data-year='{{ year }}' data-month='{{ month }}'>
     <section class="log" ng:repeat="log in logs">
         <div class="log_title week_day_{{!log.weekDay}}">{{!log.title}}</div>
         <div class="log_content">
