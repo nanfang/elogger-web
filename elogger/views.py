@@ -6,8 +6,6 @@ import urllib
 import time
 import binascii
 import uuid
-import httplib
-from functools import partial
 from datetime import date
 from config import secret
 from tornado import escape, httpclient
@@ -34,6 +32,7 @@ class SigninHandler(RequestHandler, SessionMixin):
     def get(self, *args, **kwargs):
         self.render("login.html", models={})
 
+
     @asynchronous
     def post(self, *args, **kwargs):
         username = self.get_argument("username", '')
@@ -47,15 +46,15 @@ class SigninHandler(RequestHandler, SessionMixin):
             return
 
         # TODO support email login
-        params = urllib.urlencode({"username":username,"password":password})
+        params = {"username": username, "password": password}
+
         request = HTTPRequest(
-            url='https://api.parse.com/1/login?%s' % params,
+            url='https://api.parse.com/1/login?%s' % urllib.urlencode(params),
             headers={
                 "X-Parse-Application-Id": secret.PARSE_APPLICATION_ID,
                 "X-Parse-REST-API-Key": secret.PARSE_REST_API_KEY,
-            }
-        )
-
+                }
+)
         http = httpclient.AsyncHTTPClient()
         http.fetch(request=request, callback=self.on_login)
 
@@ -138,113 +137,6 @@ class SignupHandler(RequestHandler, SessionMixin):
 
         integration.register_user(user, on_register)
 
-
-class WeiboMixin(OAuthMixin):
-    _OAUTH_REQUEST_TOKEN_URL = "http://api.t.sina.com.cn/oauth/request_token"
-    _OAUTH_ACCESS_TOKEN_URL = "http://api.t.sina.com.cn/oauth/access_token"
-    _OAUTH_AUTHORIZE_URL = "http://api.t.sina.com.cn/oauth/authorize"
-    _OAUTH_VERIFY_URL = "http://api.t.sina.com.cn/account/verify_credentials.json"
-
-
-    def authenticate_redirect(self):
-        http = httpclient.AsyncHTTPClient()
-        http.fetch(self._oauth_request_token_url(self.auth_callback),
-            self.async_callback(self._on_request_token, self._OAUTH_AUTHORIZE_URL, None))
-
-    def api_request(self, path, callback, access_token=None,
-                        post_args=None, **args):
-        url = "https://api.weibo.com/2" + path + ".json"
-        if access_token:
-            all_args = {}
-            all_args.update(args)
-            all_args.update(post_args or {})
-            method = "POST" if post_args is not None else "GET"
-            oauth = self._oauth_request_parameters(
-                url, access_token, all_args, method=method)
-            args.update(oauth)
-        if args: url += "?" + urllib.urlencode(args)
-        callback = self.async_callback(self._on_api_request, callback)
-        http = httpclient.AsyncHTTPClient()
-        if post_args is not None:
-            http.fetch(url, method="POST", body=urllib.urlencode(post_args),
-                callback=callback)
-        else:
-            http.fetch(url, callback=callback)
-
-    def _on_api_request(self, callback, response):
-        if response.error:
-            logging.warning("Error response %s fetching %s", response.error,
-                response.request.url)
-            callback(None)
-            return
-        callback(escape.json_decode(response.body))
-
-    def _oauth_consumer_token(self):
-        return dict(key=self.api_key, secret=self.api_secret)
-
-    def _oauth_get_user(self, access_token, callback):
-        http = httpclient.AsyncHTTPClient()
-        http.fetch(self._oauth_verify_url(access_token), self.async_callback(self._on_auth, access_token))
-
-    def _oauth_verify_url(self, access_token):
-        consumer_token = self._oauth_consumer_token()
-        url = self._OAUTH_VERIFY_URL
-        args = dict(
-            oauth_consumer_key=consumer_token["key"],
-            oauth_token=access_token["key"],
-            oauth_signature_method="HMAC-SHA1",
-            oauth_timestamp=str(int(time.time())),
-            oauth_nonce=binascii.b2a_hex(uuid.uuid4().bytes),
-            oauth_version=getattr(self, "_OAUTH_VERSION", "1.0a"),
-        )
-
-        if getattr(self, "_OAUTH_VERSION", "1.0a") == "1.0a":
-            signature = _oauth10a_signature(consumer_token, "GET", url, args, access_token)
-        else:
-            signature = _oauth_signature(consumer_token, "GET", url, args, access_token)
-
-        args["oauth_signature"] = signature
-        return url + "?" + urllib.urlencode(args)
-
-class WeiboHandler(RequestHandler, WeiboMixin, SessionMixin):
-    def initialize(self, api_key, api_secret, auth_callback, auth_success):
-        self.api_key=api_key
-        self.api_secret=api_secret
-        self.auth_callback=auth_callback
-        self.auth_success=auth_success
-
-    @asynchronous
-    def get(self, *args, **kwargs):
-        if self.get_argument("oauth_token", None):
-            self.get_authenticated_user(self.async_callback(self._on_auth))
-            return
-        self.authenticate_redirect()
-
-    def _on_auth(self, access_token, response):
-        if not response:
-            raise HTTPError(500, "Weibo auth failed")
-
-        if response.code == 200:
-            user_info = json.loads(response.body)
-
-            user = {
-                'userid':'weibo/%s' %user_info['id'],
-                'username':user_info['name'],
-                'nickname':user_info['screen_name'],
-                'access_token':access_token
-            }
-        else:
-            user = {
-                'userid':'weibo/%s' % access_token['user_id'],
-                'username':'weibo/%s' % access_token['user_id'],
-                'nickname':'weibo/%s' % access_token['user_id'],
-                'access_token':access_token
-            }
-        def on_register():
-            self.session.set('user', user)
-            self.redirect(self.auth_success, permanent=True)
-
-        integration.register_user(user, on_register)
 
 class BaseHandler(RequestHandler, SessionMixin):
     def get_current_user(self):

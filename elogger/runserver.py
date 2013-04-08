@@ -3,7 +3,7 @@ import os
 import sys
 import tornado.ioloop
 import tornado.web
-from elogger.views import MainHandler, SigninHandler, WeiboHandler, PreviewHandler, DayLogHandler, LogoutHandler, SignupHandler
+from elogger.views import MainHandler, SigninHandler, PreviewHandler, DayLogHandler, LogoutHandler, SignupHandler
 from elogger import settings
 from elogger.config.secret import WEIBO_API_KEY, WEIBO_API_SECRET
 
@@ -37,11 +37,6 @@ application = tornado.web.Application([
     (r'/sign-up', SignupHandler),
     (r'/logout', LogoutHandler, {'redirect_url':'/sign-in'}),
     (r'/logs', DayLogHandler),
-    (r'/auth/weibo', WeiboHandler, {'api_key': WEIBO_API_KEY,
-                                    'api_secret': WEIBO_API_SECRET,
-                                    'auth_callback': '/auth/weibo',
-                                    'auth_success': '/',
-    }),
 
 ], **application_settings)
 
