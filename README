@@ -1,4 +1,23 @@
 Source code for http://elogger.me
 Web application to log personal events and retrospective.
 
+Change Logs
+v3.0 (working)
+ - Tonardo as web framework/server, hosted on Openshift
+ - Integrate eLogger API hosted on parse.com
+ - Cookie based session
+ - Remove weibo login
+ - Implement sign-in/sign-up based on parse API
+
+v2.0
+ - Tonardo as web framework/server hosted on EC2
+ - Redis as session storage hosted on EC2
+ - Integrate eLogger API hosted on GAE
+ - Weibo login
+
+v1.0
+ - Flask as web framework
+ - Redis as storage
+ - Both hosted on EC2
+
 
