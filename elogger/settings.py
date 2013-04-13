@@ -5,9 +5,9 @@ ENV = os.getenv('ENV') or 'dev'
 
 DEBUG=True
 LOG_LEVEL='DEBUG'
-API_HOST='http://localhost:8080'
-ADMIN='test'
-MASTER_KEY='test'
+
+
+
 PARSE_HOST='https://api.parse.com'
 
 execfile(os.path.join(ROOT, 'config', 'secret.py'))

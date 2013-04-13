@@ -8,9 +8,7 @@ from config import secret
 from tornado import  httpclient
 from tornado.httpclient import HTTPRequest
 from tornado.web import RequestHandler, asynchronous, authenticated, HTTPError
-from pycket.session import SessionMixin
 from elogger.utils import xtrim
-
 from integration import integration
 
 logger = logging.getLogger(__name__)
@@ -25,7 +23,7 @@ def ajax_call(view_func):
     return _wrapped_view
 
 
-class SigninHandler(RequestHandler, SessionMixin):
+class SigninHandler(RequestHandler):
     def get(self, *args, **kwargs):
         self.render("login.html", models={})
 
@@ -67,12 +65,11 @@ class SigninHandler(RequestHandler, SessionMixin):
             'nickname': result['username'],
             'access_token': result['sessionToken']
         }
-
-        self.session.set('user', user)
+        self.set_secure_cookie("user", json.dumps(user))
         self.redirect('/', permanent=True)
 
 
-class SignupHandler(RequestHandler, SessionMixin):
+class SignupHandler(RequestHandler):
     def get(self, *args, **kwargs):
         self.render("login.html", models=dict())
 
@@ -131,13 +128,16 @@ class SignupHandler(RequestHandler, SessionMixin):
             'access_token': result['sessionToken']
         }
 
-        self.session.set('user', user)
+        self.set_secure_cookie("user", json.dumps(user))
         self.redirect('/', permanent=True)
 
 
-class BaseHandler(RequestHandler, SessionMixin):
+class BaseHandler(RequestHandler):
     def get_current_user(self):
-        return self.session.get('user')
+        user_json = self.get_secure_cookie("user")
+        if user_json:
+            return json.loads(user_json)
+        return None
 
 
 class LogoutHandler(BaseHandler):
@@ -145,7 +145,7 @@ class LogoutHandler(BaseHandler):
         self.redirect_url = redirect_url
 
     def get(self, *args, **kwargs):
-        self.session.delete('user')
+        self.clear_cookie("user")
         self.redirect(self.redirect_url)
 
     def post(self, *args, **kwargs):

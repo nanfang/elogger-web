@@ -5,7 +5,6 @@ import tornado.ioloop
 import tornado.web
 from elogger.views import MainHandler, SigninHandler, PreviewHandler, DayLogHandler, LogoutHandler, SignupHandler
 from elogger import settings
-from elogger.config.secret import WEIBO_API_KEY, WEIBO_API_SECRET
 
 DEFAULT_PORT = 8000
 logger = logging.getLogger(__name__)
@@ -16,18 +15,6 @@ application_settings = {
     "cookie_secret": "81iETzKXUAGaYckL5gEmGeJJFuYh8EQnp2XdTP1o/Vo=",
     'debug': settings.DEBUG,
     "login_url": "/sign-in",
-    'pycket': {
-        'engine': 'redis',
-        'storage': {
-            'host': 'localhost',
-            'port': 6379,
-            'db_sessions': 10,
-            'db_notifications': 11,
-            },
-        'cookies': {
-            'expires_days': 30,
-            },
-        },
     }
 
 application = tornado.web.Application([
