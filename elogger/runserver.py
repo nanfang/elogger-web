@@ -27,10 +27,13 @@ application = tornado.web.Application([
 
 ], **application_settings)
 
-def start_server(port):
+def start_server(port, address=None):
     logging.getLogger().setLevel(settings.LOG_LEVEL)
     print('start server, listening %s' % port)
-    application.listen(port)
+    if address:
+        application.listen(port, address=address)
+    else:
+        application.listen(port)
     tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == "__main__":
