@@ -4,11 +4,11 @@ import json
 import logging
 import urllib
 from datetime import date
-from config import secret
 from tornado import  httpclient
 from tornado.httpclient import HTTPRequest
 from tornado.web import RequestHandler, asynchronous, authenticated, HTTPError
 from elogger.utils import xtrim
+from elogger.config import secret
 from integration import integration
 
 logger = logging.getLogger(__name__)
