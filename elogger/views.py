@@ -3,16 +3,13 @@ import functools
 import json
 import logging
 import urllib
-import time
-import binascii
-import uuid
 from datetime import date
 from config import secret
-from tornado import escape, httpclient
-from tornado.auth import  OAuthMixin, _oauth10a_signature, _oauth_signature
+from tornado import  httpclient
 from tornado.httpclient import HTTPRequest
 from tornado.web import RequestHandler, asynchronous, authenticated, HTTPError
 from pycket.session import SessionMixin
+from elogger.utils import xtrim
 
 from integration import integration
 
@@ -44,7 +41,7 @@ class SigninHandler(RequestHandler, SessionMixin):
         if not password:
             self.render("login.html", models=dict(username=username, error='Password can not be empty!'))
             return
-
+        # TODO move all logic in to Integration
         # TODO support email login
         params = {"username": username, "password": password}
 
@@ -53,32 +50,31 @@ class SigninHandler(RequestHandler, SessionMixin):
             headers={
                 "X-Parse-Application-Id": secret.PARSE_APPLICATION_ID,
                 "X-Parse-REST-API-Key": secret.PARSE_REST_API_KEY,
-                }
-)
+            }
+        )
         http = httpclient.AsyncHTTPClient()
         http.fetch(request=request, callback=self.on_login)
 
     def on_login(self, response):
         result = json.loads(response.body)
         if 'username' not in result:
-            self.render("login.html",  models=dict(error="Invalid Username/Password"))
+            self.render("login.html", models=dict(error="Invalid Username/Password"))
             return
 
         user = {
-                'userid':'parse/%s' % result['objectId'],
-                'username':'parse/%s' % result['username'],
-                'nickname':'%s' % result['username'],
-                'access_token': result['sessionToken']
-            }
-        def on_register():
-            self.session.set('user', user)
-            self.redirect('/', permanent=True)
+            'userid': result['objectId'],
+            'username': result['username'],
+            'nickname': result['username'],
+            'access_token': result['sessionToken']
+        }
 
-        integration.register_user(user, on_register)
+        self.session.set('user', user)
+        self.redirect('/', permanent=True)
+
 
 class SignupHandler(RequestHandler, SessionMixin):
     def get(self, *args, **kwargs):
-        self.render("login.html",  models=dict())
+        self.render("login.html", models=dict())
 
     @asynchronous
     def post(self, *args, **kwargs):
@@ -86,26 +82,29 @@ class SignupHandler(RequestHandler, SessionMixin):
         self.email = self.get_argument("signupEmail", '')
         password = self.get_argument("signupPassword", '')
         if not self.username:
-            self.render("login.html",  models=dict(username=self.username,email=self.email, error='Username can not be empty!'))
+            self.render("login.html",
+                models=dict(username=self.username, email=self.email, error='Username can not be empty!'))
             return
 
         if not self.email:
-            self.render("login.html",  models=dict(username=self.username,email=self.email, error='Email can not be empty!'))
+            self.render("login.html",
+                models=dict(username=self.username, email=self.email, error='Email can not be empty!'))
             return
 
         if not password:
-            self.render("login.html",  models=dict(username=self.username,email=self.email, error='Password can not be empty!'))
+            self.render("login.html",
+                models=dict(username=self.username, email=self.email, error='Password can not be empty!'))
             return
 
         request = HTTPRequest(
-            url='https://api.parse.com/1/users' ,
+            url='https://api.parse.com/1/users',
             headers={
                 "X-Parse-Application-Id": secret.PARSE_APPLICATION_ID,
                 "X-Parse-REST-API-Key": secret.PARSE_REST_API_KEY,
                 "Content-Type": "application/json",
-                },
+            },
             method='POST',
-            body = json.dumps({
+            body=json.dumps({
                 "username": self.username,
                 "password": password,
                 "email": self.email
@@ -120,31 +119,30 @@ class SignupHandler(RequestHandler, SessionMixin):
     def on_login(self, response):
         result = json.loads(response.body)
         print(result)
-        if response.code!=201:
-            error  = result.get('error', 'Error to sign up')
-            self.render("login.html", models=dict(error=error, username=self.username,email=self.email ))
+        if response.code != 201:
+            error = result.get('error', 'Error to sign up')
+            self.render("login.html", models=dict(error=error, username=self.username, email=self.email))
             return
 
         user = {
-            'userid':'parse/%s' % result['objectId'],
-            'username':'parse/%s' % self.username,
-            'nickname':'%s' % self.username,
+            'userid': result['objectId'],
+            'username': self.username,
+            'nickname': '%s' % self.username,
             'access_token': result['sessionToken']
         }
-        def on_register():
-            self.session.set('user', user)
-            self.redirect('/', permanent=True)
 
-        integration.register_user(user, on_register)
+        self.session.set('user', user)
+        self.redirect('/', permanent=True)
 
 
 class BaseHandler(RequestHandler, SessionMixin):
     def get_current_user(self):
         return self.session.get('user')
 
+
 class LogoutHandler(BaseHandler):
     def initialize(self, redirect_url):
-        self.redirect_url=redirect_url
+        self.redirect_url = redirect_url
 
     def get(self, *args, **kwargs):
         self.session.delete('user')
@@ -187,7 +185,9 @@ class DayLogHandler(BaseHandler):
     def post(self, *args, **kwargs):
         user = self.current_user
         daylog = json.loads(self.request.body)
+
         integration.put_day_log(
+            id=xtrim(daylog.get('id')),
             userid=user['userid'],
             year=daylog['year'],
             month=daylog['month'],
@@ -206,8 +206,8 @@ class DayLogHandler(BaseHandler):
         self.write(json.dumps(day_logs))
         self.finish()
 
-class PreviewHandler(BaseHandler):
 
+class PreviewHandler(BaseHandler):
     def get(self, *args, **kwargs):
         logger.debug('preview')
         self.render('preview.html')

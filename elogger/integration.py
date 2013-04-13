@@ -2,9 +2,10 @@
 from __future__ import unicode_literals, print_function, division
 import json
 import logging
-import uuid
+import urllib
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
-from elogger import settings
+from elogger.config import secret
+from elogger.constants import LOG_TYPE_DAY_LOG
 
 logger = logging.getLogger(__name__)
 
@@ -12,11 +13,8 @@ class Integration:
     def get_month_logs(self, username, year, month, callback):
         return callback({})
 
-    def put_day_log(self, username, year, month, day, content, callback):
+    def put_day_log(self, id, username, year, month, day, content, callback):
         return callback(True)
-
-    def register_user(self, user, callback):
-        callback()
 
 
 class DummyIntegration(Integration):
@@ -26,14 +24,14 @@ class DummyIntegration(Integration):
             '12': 'test',
             '13': 'test',
             '14': 'test',
-            }
+        }
         },
         2012: {1: {
             '1': 'test',
             '2': 'test',
             '5': 'test',
             '6': 'test',
-            }
+        }
         }
     }
 
@@ -42,7 +40,7 @@ class DummyIntegration(Integration):
             self.dummy_data.get(year, {}).get(month, {})
         )
 
-    def put_day_log(self, username, year, month, day, content, callback):
+    def put_day_log(self, id, username, year, month, day, content, callback):
         if year not in self.dummy_data:
             self.dummy_data[year] = {}
         if month not in self.dummy_data[year]:
@@ -52,79 +50,78 @@ class DummyIntegration(Integration):
         return callback(True)
 
 
-class ApiIntegration(Integration):
+class ParseIntegration(Integration):
     http_client = AsyncHTTPClient()
+    api_host = 'https://api.parse.com/1/'
 
-    def __init__(self, api_url, admin, master_key):
-        self.api_url = api_url
-        self.admin = admin
-        self.master_key = master_key
+    def __init__(self, app_id, api_key):
+        self.api_header = {
+            "X-Parse-Application-Id": app_id,
+            "X-Parse-REST-API-Key": api_key,
+            "Content-Type": "application/json"
+        }
+
+    def put_day_log(self, id, userid, year, month, day, content, callback):
+        """
+        create or update day log
+        """
+        url, method = ('%s/classes/DayLog/%s' % (self.api_host, id), 'PUT' ) if id\
+        else ('%s/classes/DayLog' % self.api_host, 'POST')
+        request = HTTPRequest(
+            url=url,
+            headers=self.api_header,
+            method=method,
+            body=json.dumps(dict(
+                userid=userid,
+                year=year,
+                month=month,
+                day=day,
+                content=content
+            )),
+        )
+
+        def _get_response(response):
+            # TODO handle errors
+            if id:
+                callback(id)
+            else:
+                result = json.loads(response.body)
+                callback(result['objectId'])
+
+        self.http_client.fetch(request, callback=_get_response)
+
 
     def get_month_logs(self, userid, year, month, callback):
-        self.http_client.fetch(
-            HTTPRequest(
-                url='%s/daylogs?year=%s&month=%s' % (self.api_url, year, month),
-                auth_username=userid,
-                auth_password=self.master_key,
-            ),
-            callback=lambda response: callback(self._on_get_logs(response))
-        )
+        params = urllib.urlencode({"where": json.dumps({
+            'userid': userid,
+            'year': year,
+            'month': month,
 
-    def put_day_log(self, userid, year, month, day, content, callback):
-        self.http_client.fetch(
-            HTTPRequest(
-                method='POST',
-                url='%s/daylogs' % self.api_url,
-                auth_username=userid,
-                auth_password=self.master_key,
-                body=json.dumps(dict(
-                    year=year,
-                    month=month,
-                    day=day,
-                    content=content
+        })})
+        url = '%s/classes/DayLog?%s' % (self.api_host, params)
+        request = HTTPRequest(url=url, headers=self.api_header, method='GET')
+        def _on_response(response):
+            day_logs = {}
+            for log in json.loads(response.body)['results']:
+                day = log['day']
+                if day not in day_logs:
+                    day_logs[day] = []
+                day_logs[day].append(dict(
+                    content=log['content'],
+                    id=log['objectId'],
+                    title='',
+                    type=LOG_TYPE_DAY_LOG
                 ))
-            ),
-            callback=lambda response: callback(response.body)
+            return day_logs
+
+        self.http_client.fetch(request,
+            callback=lambda response: callback(_on_response(response))
         )
 
-    def _on_get_logs(self, response):
-        day_logs = {}
-        for log in  json.loads(response.body):
-            day = log['day']
-
-            if day not in day_logs:
-                day_logs[day] = []
-            day_logs[day].append(dict(
-                content=log['content'],
-                id=log['id'],
-                title=log['title'],
-                type=log['type']
-            ))
-
-        return day_logs
-
-    def register_user(self, user, success):
-        self.http_client.fetch(
-            HTTPRequest(
-                method="POST",
-                url='%s/users' % self.api_url,
-                auth_username=self.admin,
-                auth_password=self.master_key,
-                body=json.dumps(dict(
-                    userid=user['userid'],
-                    username=user['username'],
-                    nickname=user['nickname'],
-                    type='SERVER',
-                    api_key='',
-                )),
-            ),
-            callback=lambda response: success()
-        )
 
 
 def get_integration():
 #    return  DummyIntegration()
-    logger.info(settings.API_HOST)
-    return ApiIntegration(settings.API_HOST, settings.ADMIN, settings.MASTER_KEY)
+    return ParseIntegration(secret.PARSE_APPLICATION_ID, secret.PARSE_REST_API_KEY)
 
 integration = get_integration()

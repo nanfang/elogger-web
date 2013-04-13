@@ -1,0 +1,1 @@
+LOG_TYPE_DAY_LOG = 0
