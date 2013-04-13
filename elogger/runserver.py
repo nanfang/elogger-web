@@ -27,9 +27,11 @@ application = tornado.web.Application([
 
 ], **application_settings)
 
-if __name__ == "__main__":
-    port = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_PORT
+def start_server(port):
     logging.getLogger().setLevel(settings.LOG_LEVEL)
     print('start server, listening %s' % port)
     application.listen(port)
     tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == "__main__":
+    start_server(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_PORT)
