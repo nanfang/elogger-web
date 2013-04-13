@@ -1,4 +1,0 @@
-redis==2.4.10
-tornado==2.1.1
-supervisor==3.0a12
-pycket=0.2.0

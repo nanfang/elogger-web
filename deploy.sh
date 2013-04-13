@@ -1,1 +1,0 @@
-fab -i ~/.ssh/elogger.pem stop copy start status
