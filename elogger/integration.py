@@ -4,7 +4,7 @@ import json
 import logging
 import urllib
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
-from elogger.config import secret
+from elogger import settings
 from elogger.constants import LOG_TYPE_DAY_LOG
 
 logger = logging.getLogger(__name__)
@@ -52,14 +52,14 @@ class DummyIntegration(Integration):
 
 class ParseIntegration(Integration):
     http_client = AsyncHTTPClient()
-    api_host = 'https://api.parse.com/1/'
 
-    def __init__(self, app_id, api_key):
+    def __init__(self, app_id, api_key, api_host):
         self.api_header = {
             "X-Parse-Application-Id": app_id,
             "X-Parse-REST-API-Key": api_key,
             "Content-Type": "application/json"
         }
+        self.api_host = api_host
 
     def put_day_log(self, id, userid, year, month, day, content, callback):
         """
@@ -122,6 +122,7 @@ class ParseIntegration(Integration):
 
 def get_integration():
 #    return  DummyIntegration()
-    return ParseIntegration(secret.PARSE_APPLICATION_ID, secret.PARSE_REST_API_KEY)
+    return ParseIntegration(settings.PARSE_APPLICATION_ID, settings.PARSE_REST_API_KEY, settings.PARSE_HOST)
 
 integration = get_integration()
+

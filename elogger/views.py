@@ -8,7 +8,7 @@ from tornado import  httpclient
 from tornado.httpclient import HTTPRequest
 from tornado.web import RequestHandler, asynchronous, authenticated, HTTPError
 from elogger.utils import xtrim
-from elogger.config import secret
+from elogger import settings
 from integration import integration
 
 logger = logging.getLogger(__name__)
@@ -44,10 +44,11 @@ class SigninHandler(RequestHandler):
         params = {"username": username, "password": password}
 
         request = HTTPRequest(
-            url='https://api.parse.com/1/login?%s' % urllib.urlencode(params),
+            # url='https://api.parse.com/1/login?%s' % urllib.urlencode(params),
+            url='%s/login?%s' % (settings.PARSE_HOST, urllib.urlencode(params)),
             headers={
-                "X-Parse-Application-Id": secret.PARSE_APPLICATION_ID,
-                "X-Parse-REST-API-Key": secret.PARSE_REST_API_KEY,
+                "X-Parse-Application-Id": settings.PARSE_APPLICATION_ID,
+                "X-Parse-REST-API-Key": settings.PARSE_REST_API_KEY,
             }
         )
         http = httpclient.AsyncHTTPClient()
@@ -156,9 +157,11 @@ class MainHandler(BaseHandler):
     @authenticated
     def get(self, *args, **kwargs):
         user = self.current_user
+        # FIXME timezone
         today = date.today()
         year = self.get_argument('year', today.year)
         month = self.get_argument('month', today.month)
+
         self.render('main.html',
             **{'user': user, 'year': year, 'month': month})
 

@@ -65,7 +65,11 @@ EloggerListController.prototype = {
             cur = $.date('{0}-{1}-01'.format(year, month), "yyyy-MM-dd");
             cur.adjust("M", 1);
             cur.adjust("D", -1);
+        } else {
+            cur = today;
+            cur.adjust("D", 1);
         }
+
         return cur;
     },
 
