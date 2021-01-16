@@ -1,7 +1,11 @@
-Source code for http://elogger.me
+Source code for http://elogger.nanfang.me
 Web application to log personal events and retrospective.
-
+========
 Change Logs
+v4.0 (development stopped)
+- AngularJS as the frontend
+- Parse.com migrated to a standalone repo and hosted in a free clound
+
 v3.0 (working)
  - Tonardo as web framework/server, hosted on Openshift
  - Integrate eLogger API hosted on parse.com
